@@ -1,0 +1,11 @@
+<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="200" fill="white"/>
+  
+  <!-- Logo elements -->
+  <circle cx="100" cy="100" r="50" fill="#4c1d95"/>
+  <rect x="85" y="85" width="30" height="30" fill="white"/>
+  
+  <!-- Text -->
+  <text x="250" y="110" font-family="Arial" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">DIGITAL SOLUTIONS</text>
+</svg>

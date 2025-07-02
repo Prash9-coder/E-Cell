@@ -1,0 +1,24 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f0f9ff"/>
+  
+  <!-- Event elements -->
+  <rect x="100" y="100" width="600" height="200" fill="#0284c7" rx="20"/>
+  
+  <!-- Laptop icon -->
+  <rect x="150" y="150" width="120" height="80" fill="white" rx="5"/>
+  <rect x="140" y="230" width="140" height="10" fill="white" rx="5"/>
+  
+  <!-- People icons -->
+  <circle cx="350" cy="170" r="20" fill="white"/>
+  <rect x="330" y="190" width="40" height="40" fill="white"/>
+  
+  <circle cx="400" cy="170" r="20" fill="white"/>
+  <rect x="380" y="190" width="40" height="40" fill="white"/>
+  
+  <circle cx="450" cy="170" r="20" fill="white"/>
+  <rect x="430" y="190" width="40" height="40" fill="white"/>
+  
+  <!-- Text -->
+  <text x="450" y="260" font-family="Arial" font-size="36" fill="white" text-anchor="middle" font-weight="bold">WORKSHOP</text>
+</svg>

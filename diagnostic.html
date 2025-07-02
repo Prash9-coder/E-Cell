@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Cell Website Diagnostic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #3b82f6;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .test-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .error {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        .pending {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2563eb;
+        }
+        pre {
+            background-color: #f3f4f6;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>E-Cell Website Diagnostic Tool</h1>
+    <p>This tool will help diagnose issues with the E-Cell website.</p>
+    
+    <div class="test-section">
+        <div class="test-title">1. Backend API Health Check</div>
+        <p>Tests if the backend API is accessible.</p>
+        <button onclick="testBackendHealth()">Run Test</button>
+        <div id="backend-health-result" class="result pending">Test not run yet</div>
+    </div>
+    
+    <div class="test-section">
+        <div class="test-title">2. Frontend Development Server</div>
+        <p>Tests if the frontend development server is accessible.</p>
+        <button onclick="testFrontendServer()">Run Test</button>
+        <div id="frontend-server-result" class="result pending">Test not run yet</div>
+    </div>
+    
+    <div class="test-section">
+        <div class="test-title">3. API Endpoints Test</div>
+        <p>Tests if specific API endpoints are working.</p>
+        <button onclick="testApiEndpoints()">Run Test</button>
+        <div id="api-endpoints-result" class="result pending">Test not run yet</div>
+    </div>
+    
+    <div class="test-section">
+        <div class="test-title">4. CORS Configuration</div>
+        <p>Tests if CORS is properly configured.</p>
+        <button onclick="testCors()">Run Test</button>
+        <div id="cors-result" class="result pending">Test not run yet</div>
+    </div>
+    
+    <div class="test-section">
+        <div class="test-title">5. Network Connectivity</div>
+        <p>Tests general network connectivity.</p>
+        <button onclick="testNetworkConnectivity()">Run Test</button>
+        <div id="network-result" class="result pending">Test not run yet</div>
+    </div>
+    
+    <script>
+        async function testBackendHealth() {
+            const resultElement = document.getElementById('backend-health-result');
+            resultElement.className = 'result pending';
+            resultElement.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/health', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultElement.className = 'result success';
+                    resultElement.innerHTML = `Success! Backend is running.<br>Response: <pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    resultElement.className = 'result error';
+                    resultElement.textContent = `Error: Backend returned status ${response.status} ${response.statusText}`;
+                }
+            } catch (error) {
+                resultElement.className = 'result error';
+                resultElement.textContent = `Error: ${error.message}. The backend server might not be running or is inaccessible.`;
+            }
+        }
+        
+        async function testFrontendServer() {
+            const resultElement = document.getElementById('frontend-server-result');
+            resultElement.className = 'result pending';
+            resultElement.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch('http://localhost:5173', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'text/html'
+                    }
+                });
+                
+                if (response.ok) {
+                    resultElement.className = 'result success';
+                    resultElement.textContent = 'Success! Frontend development server is running.';
+                } else {
+                    resultElement.className = 'result error';
+                    resultElement.textContent = `Error: Frontend server returned status ${response.status} ${response.statusText}`;
+                }
+            } catch (error) {
+                resultElement.className = 'result error';
+                resultElement.textContent = `Error: ${error.message}. The frontend server might not be running or is inaccessible.`;
+            }
+        }
+        
+        async function testApiEndpoints() {
+            const resultElement = document.getElementById('api-endpoints-result');
+            resultElement.className = 'result pending';
+            resultElement.textContent = 'Testing...';
+            
+            const endpoints = [
+                '/api/events',
+                '/api/blog',
+                '/api/users'
+            ];
+            
+            const results = [];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(`http://localhost:5000${endpoint}`, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    results.push({
+                        endpoint,
+                        status: response.status,
+                        ok: response.ok
+                    });
+                } catch (error) {
+                    results.push({
+                        endpoint,
+                        error: error.message
+                    });
+                }
+            }
+            
+            const allSuccessful = results.every(r => r.ok);
+            
+            if (allSuccessful) {
+                resultElement.className = 'result success';
+            } else {
+                resultElement.className = 'result error';
+            }
+            
+            resultElement.innerHTML = `
+                <div>${allSuccessful ? 'All endpoints are accessible' : 'Some endpoints failed'}</div>
+                <pre>${JSON.stringify(results, null, 2)}</pre>
+            `;
+        }
+        
+        async function testCors() {
+            const resultElement = document.getElementById('cors-result');
+            resultElement.className = 'result pending';
+            resultElement.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/health', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Origin': 'http://localhost:5173'
+                    }
+                });
+                
+                const corsHeaders = {
+                    'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+                    'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+                    'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+                };
+                
+                if (response.ok && corsHeaders['Access-Control-Allow-Origin']) {
+                    resultElement.className = 'result success';
+                    resultElement.innerHTML = `
+                        Success! CORS is properly configured.
+                        <pre>${JSON.stringify(corsHeaders, null, 2)}</pre>
+                    `;
+                } else {
+                    resultElement.className = 'result error';
+                    resultElement.innerHTML = `
+                        Error: CORS might not be properly configured.
+                        <pre>${JSON.stringify(corsHeaders, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultElement.className = 'result error';
+                resultElement.textContent = `Error: ${error.message}. Could not test CORS configuration.`;
+            }
+        }
+        
+        async function testNetworkConnectivity() {
+            const resultElement = document.getElementById('network-result');
+            resultElement.className = 'result pending';
+            resultElement.textContent = 'Testing...';
+            
+            try {
+                // Test connectivity to a reliable external service
+                const response = await fetch('https://www.google.com', {
+                    method: 'GET'
+                });
+                
+                if (response.ok) {
+                    resultElement.className = 'result success';
+                    resultElement.textContent = 'Success! Network connectivity is working.';
+                } else {
+                    resultElement.className = 'result error';
+                    resultElement.textContent = `Error: External connectivity test failed with status ${response.status}`;
+                }
+            } catch (error) {
+                resultElement.className = 'result error';
+                resultElement.textContent = `Error: ${error.message}. Network connectivity issues detected.`;
+            }
+        }
+    </script>
+</body>
+</html>

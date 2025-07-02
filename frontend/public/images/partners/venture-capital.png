@@ -1,0 +1,10 @@
+<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="200" fill="white"/>
+  
+  <!-- Logo elements -->
+  <polygon points="100,50 150,150 50,150" fill="#7c3aed"/>
+  
+  <!-- Text -->
+  <text x="250" y="110" font-family="Arial" font-size="24" font-weight="bold" fill="#333" text-anchor="middle">VENTURE CAPITAL</text>
+</svg>

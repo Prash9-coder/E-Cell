@@ -1,0 +1,18 @@
+PK
+     �V�N               xl/PK
+     �V�N            	   xl/theme/PK
+     �V�N               xl/_rels/PK
+     �V�N               _rels/PK
+     �V�N               xl/worksheets/PK
+     �V�N               xl/worksheets/sheet1.xmlPK
+     �V�N�G��  �     xl/workbook.xml<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+  <sheets>
+    <sheet name="Financial Projections" sheetId="1" r:id="rId1"/>
+  </sheets>
+</workbook>PK
+     �V�N            	   docProps/PK
+     �V�N               docProps/core.xmlPK
+     �V�N               docProps/app.xmlPK
+     �V�N               xl/styles.xmlPK
+     �V�N               [Content_Types].xmlPK

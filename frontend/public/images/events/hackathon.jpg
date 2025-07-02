@@ -1,0 +1,17 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f0f9ff"/>
+  
+  <!-- Event elements -->
+  <rect x="100" y="100" width="600" height="200" fill="#7c3aed" rx="20"/>
+  
+  <!-- Code brackets -->
+  <text x="200" y="200" font-family="monospace" font-size="80" fill="white" text-anchor="middle">{}</text>
+  
+  <!-- Lightbulb -->
+  <circle cx="500" cy="180" r="40" fill="white"/>
+  <polygon points="500,140 520,180 480,180" fill="white"/>
+  
+  <!-- Text -->
+  <text x="400" y="260" font-family="Arial" font-size="36" fill="white" text-anchor="middle" font-weight="bold">HACKATHON</text>
+</svg>

@@ -1,0 +1,19 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f0f9ff"/>
+  
+  <!-- Event elements -->
+  <rect x="100" y="100" width="600" height="200" fill="#0284c7" rx="20"/>
+  
+  <!-- Calendar icon -->
+  <rect x="150" y="150" width="100" height="100" fill="white" rx="10"/>
+  <line x1="150" y1="180" x2="250" y2="180" stroke="#0284c7" stroke-width="2"/>
+  <line x1="170" y1="150" x2="170" y2="250" stroke="#0284c7" stroke-width="2"/>
+  <line x1="190" y1="150" x2="190" y2="250" stroke="#0284c7" stroke-width="2"/>
+  <line x1="210" y1="150" x2="210" y2="250" stroke="#0284c7" stroke-width="2"/>
+  <line x1="230" y1="150" x2="230" y2="250" stroke="#0284c7" stroke-width="2"/>
+  
+  <!-- Text -->
+  <text x="450" y="180" font-family="Arial" font-size="36" fill="white" text-anchor="middle" font-weight="bold">EVENT</text>
+  <text x="450" y="220" font-family="Arial" font-size="24" fill="white" text-anchor="middle">Join us for an amazing experience</text>
+</svg>

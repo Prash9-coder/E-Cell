@@ -1,0 +1,36 @@
+{
+  "name": "ecell-website",
+  "version": "1.0.0",
+  "description": "E-Cell Website with Vite React frontend and Express backend",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm run install:frontend && npm run install:backend",
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && npm install",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run build:frontend",
+    "start": "cd backend && npm start",
+    "health": "cd backend && npm run health",
+    "create-admin": "cd backend && npm run create-admin",
+    "test:frontend": "cd frontend && npm run test",
+    "test:backend": "cd backend && npm run test",
+    "test": "npm run test:backend && npm run test:frontend",
+    "deploy:prep": "npm run install:all && npm run build && npm run health",
+    "deploy:check": "npm run health && npm run build"
+  },
+  "keywords": [
+    "ecell",
+    "entrepreneurship",
+    "react",
+    "vite",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

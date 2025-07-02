@@ -1,0 +1,61 @@
+.gallery-image-container {
+  position: relative;
+  height: 12rem; /* h-48 equivalent */
+  overflow: hidden;
+  background-color: #f3f4f6; /* bg-gray-100 equivalent */
+}
+
+.gallery-image-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e5e7eb; /* bg-gray-200 equivalent */
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  z-index: 10;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.gallery-image:hover {
+  transform: scale(1.05);
+}
+
+.gallery-image.loading {
+  opacity: 0;
+}
+
+.gallery-image.loaded {
+  opacity: 1;
+}
+
+.lightbox-container {
+  position: relative;
+  background-color: #1f2937; /* bg-gray-800 equivalent */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.lightbox-image {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.lightbox-image.loading {
+  opacity: 0;
+}
+
+.lightbox-image.loaded {
+  opacity: 1;
+}
