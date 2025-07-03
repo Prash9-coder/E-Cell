@@ -370,6 +370,12 @@ const EventsPage = () => {
                       fallbackSrc={getFallbackImage('events')}
                       className="w-full h-full"
                       objectFit="cover"
+                      onError={(e) => {
+                        console.error('❌ Image failed to load:', e.target.src);
+                      }}
+                      onLoad={() => {
+                        console.log('✅ Image loaded successfully:', getContentImageUrl(event.image, 'events'));
+                      }}
                     />
                     {event.isFeatured && (
                       <div className="absolute top-0 right-0 bg-secondary-600 text-white py-1 px-3 text-sm font-medium">
