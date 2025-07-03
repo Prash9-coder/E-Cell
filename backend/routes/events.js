@@ -571,4 +571,18 @@ router.put('/:id/attendance', authenticate, isAdmin, async (req, res) => {
   }
 });
 
+// Test authentication route
+router.get('/test-auth', authenticate, (req, res) => {
+  res.status(200).json({ 
+    status: 'ok', 
+    message: 'Authentication is working',
+    user: {
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email,
+      role: req.user.role
+    }
+  });
+});
+
 export default router;
