@@ -217,6 +217,8 @@ const api = {
     login: async (credentials) => {
       try {
         console.log(`Attempting to login with email: ${credentials.email}`);
+        console.log('Config API URL:', config.api.url);
+        console.log('Full API URL:', `${config.api.url}/auth/login`);
         
         const response = await fetch(`${config.api.url}/auth/login`, {
           method: 'POST',

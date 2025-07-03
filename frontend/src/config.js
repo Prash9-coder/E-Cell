@@ -17,7 +17,9 @@ const config = {
     version: import.meta.env.VITE_APP_VERSION || '1.0.0'
   },
   api: {
-    url: import.meta.env.VITE_API_URL || 'https://e-cell-backend1.onrender.com/api',
+    url: import.meta.env.MODE === 'production' 
+      ? 'https://e-cell-backend1.onrender.com/api' 
+      : import.meta.env.VITE_API_URL || 'https://e-cell-backend1.onrender.com/api',
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT || '30000', 10)
   },
   features: {
