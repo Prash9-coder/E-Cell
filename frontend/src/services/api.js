@@ -73,8 +73,8 @@ const createHeaders = (includeAuth = true, isFormData = false) => {
       // For development fallback - if we're in admin section but no token
       if (window.location.pathname.startsWith('/admin') && import.meta.env.MODE !== 'production') {
         console.log('Using development fallback token for admin request');
-        const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6InByYXNoYW50aEBlY2VsbC5vcmciLCJuYW1lIjoiUHJhc2hhbnRoIE5pbW1hbGEiLCJpYXQiOjE2MTk3MTIwMDAsImV4cCI6MTYyMjMwNDAwMH0.8_Yk2AJbseGgFPsW9jgmKIgrQ3_0OGSGp0f-K4vTZ5Q';
-        headers['Authorization'] = `Bearer ${mockToken}`;
+        const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjZhYTNkZTViNGFiYmQ4NzdkM2VjYSIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwibmFtZSI6IkFkbWluIFVzZXIiLCJpYXQiOjE3NTE1NjA0NzAsImV4cCI6MTc1MTY0Njg3MH0.Rh9KIGCgENhfTbKZ_beY3t7y3gYxlWvYhLJYk7mGaRU';
+        headers['Authorization'] = `Bearer ${validToken}`;
       }
     }
   }

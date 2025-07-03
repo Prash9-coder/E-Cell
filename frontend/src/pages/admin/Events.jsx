@@ -231,15 +231,15 @@ const Events = () => {
       if (!token) {
         console.warn('No authentication token found');
         
-        // In development mode, create a mock token
+        // In development mode, create a valid token
         if (import.meta.env.MODE !== 'production') {
-          console.log('Creating mock token for development mode');
-          const mockToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6InByYXNoYW50aEBlY2VsbC5vcmciLCJuYW1lIjoiUHJhc2hhbnRoIE5pbW1hbGEiLCJpYXQiOjE2MTk3MTIwMDAsImV4cCI6MTYyMjMwNDAwMH0.8_Yk2AJbseGgFPsW9jgmKIgrQ3_0OGSGp0f-K4vTZ5Q';
-          localStorage.setItem('token', mockToken);
+          console.log('Creating valid token for development mode');
+          const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjZhYTNkZTViNGFiYmQ4NzdkM2VjYSIsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwibmFtZSI6IkFkbWluIFVzZXIiLCJpYXQiOjE3NTE1NjA0NzAsImV4cCI6MTc1MTY0Njg3MH0.Rh9KIGCgENhfTbKZ_beY3t7y3gYxlWvYhLJYk7mGaRU';
+          localStorage.setItem('token', validToken);
           localStorage.setItem('user', JSON.stringify({
-            id: '1',
-            name: 'Prashanth Nimmala',
-            email: 'prashanth@ecell.org',
+            id: '6866aa3de5b4abbd877d3eca',
+            name: 'Admin User',
+            email: 'admin@gmail.com',
             role: 'admin'
           }));
         } else {
