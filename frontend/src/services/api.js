@@ -163,8 +163,24 @@ const handleResponse = async (response) => {
     
     // For validation errors, provide more specific details
     if (data.details) {
-      const validationErrors = Object.values(data.details).map(err => err.message || err).join(', ');
-      errorMessage += ': ' + validationErrors;
+      if (typeof data.details === 'object') {
+        const validationErrors = Object.entries(data.details).map(([field, err]) => {
+          const message = err.message || err;
+          return `${field}: ${message}`;
+        }).join(', ');
+        errorMessage += ' - ' + validationErrors;
+      } else {
+        errorMessage += ' - ' + data.details;
+      }
+    }
+    
+    // Handle mongoose validation errors
+    if (data.errors) {
+      const validationErrors = Object.entries(data.errors).map(([field, err]) => {
+        const message = err.message || err;
+        return `${field}: ${message}`;
+      }).join(', ');
+      errorMessage += ' - ' + validationErrors;
     }
     
     const errorObj = new Error(errorMessage);
@@ -181,6 +197,13 @@ const handleResponse = async (response) => {
       url: response.url,
       data
     });
+    
+    // Additional debugging for validation errors
+    if (data.details) {
+      console.error('Validation details:', data.details);
+      console.error('Validation details type:', typeof data.details);
+      console.error('Validation details stringified:', JSON.stringify(data.details, null, 2));
+    }
     
     throw errorObj;
   }

@@ -202,13 +202,13 @@ const Events = () => {
       
       // Get form data
       const formData = {
-        title: e.target.title.value,
-        date: e.target.date.value,
-        location: e.target.location.value,
-        description: e.target.description.value,
+        title: e.target.title.value.trim(),
+        date: e.target.date.value, // HTML date input returns YYYY-MM-DD format
+        location: e.target.location.value.trim(),
+        description: e.target.description.value.trim(),
         // Add required fields from the Event model
-        longDescription: e.target.longDescription.value,
-        time: e.target.time?.value || '09:00 AM - 05:00 PM', // Default time if not provided
+        longDescription: e.target.longDescription.value.trim(),
+        time: e.target.time?.value?.trim() || '09:00 AM - 05:00 PM', // Default time if not provided
         category: e.target.category?.value || 'workshop', // Default category if not provided
         image: imageUrl, // Use uploaded image URL or existing image
         // Set status as a custom field for the frontend
@@ -220,7 +220,16 @@ const Events = () => {
         isFeatured: currentEvent?.isFeatured || false,
         // Don't send createdBy - backend will set it automatically from authenticated user
         // Add a slug field based on the title
-        slug: currentEvent?.slug || e.target.title.value.toLowerCase().replace(/\s+/g, '-')
+        slug: currentEvent?.slug || e.target.title.value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+      }
+      
+      // Validate required fields
+      const requiredFields = ['title', 'date', 'location', 'description', 'longDescription', 'time', 'category'];
+      const missingFields = requiredFields.filter(field => !formData[field] || formData[field].trim() === '');
+      
+      if (missingFields.length > 0) {
+        alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
+        return;
       }
       
       console.log('Submitting event data:', formData);
@@ -309,6 +318,8 @@ const Events = () => {
       setShowModal(false);
     } catch (error) {
       console.error('Error saving event:', error);
+      console.error('Error object keys:', Object.keys(error));
+      console.error('Error data:', error.data);
       
       // Handle specific error cases
       if (error.message && (error.message.includes('Token') || error.message.includes('Authentication'))) {
@@ -316,9 +327,21 @@ const Events = () => {
         console.warn('Authentication error detected:', error.message);
         alert(`Authentication error: ${error.message}. Please log in again and retry.`);
       } else {
-        // Other errors
-        const errorMessage = error.message || 'Server error';
-        console.error('Error details:', errorMessage);
+        // Other errors - try to extract more detailed information
+        let errorMessage = error.message || 'Server error';
+        
+        // If there's additional data, try to extract it
+        if (error.data && error.data.details) {
+          console.error('Validation details from error.data:', error.data.details);
+          if (typeof error.data.details === 'object') {
+            const validationErrors = Object.entries(error.data.details).map(([field, err]) => {
+              return `${field}: ${err.message || err}`;
+            }).join('\n');
+            errorMessage += '\n\nValidation errors:\n' + validationErrors;
+          }
+        }
+        
+        console.error('Final error message:', errorMessage);
         alert(`Failed to save event: ${errorMessage}`);
       }
     } finally {
