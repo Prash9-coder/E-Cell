@@ -114,16 +114,30 @@ app.get('/api/health', (req, res) => {
 // Error handling middleware
 app.use(errorHandler);
 
-// Serve static assets in production
-if (config.server.env === 'production') {
-  // Set static folder
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
-
-  // Any route that is not an API route will be handled by the React app
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../frontend/dist', 'index.html'));
+// API-only mode - frontend is deployed separately on Vercel
+// Add a simple root route for health check
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'E-Cell Backend API is running',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      docs: 'Available endpoints: /api/auth, /api/events, /api/startups, /api/blog, /api/gallery, /api/contact, /api/newsletter, /api/users, /api/admin, /api/involvement, /api/team, /api/partners, /api/incubation, /api/resources'
+    }
   });
-}
+});
+
+// Catch all non-API routes
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api/')) {
+    res.status(404).json({ 
+      status: 'error', 
+      message: 'API endpoint not found. This is a backend API server. Frontend is deployed separately.',
+      availableEndpoints: '/api/*'
+    });
+  }
+});
 
 // Connect to MongoDB and start server
 const startServer = async () => {
