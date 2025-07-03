@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FaSearch, FaFilter, FaCalendarAlt, FaUser, FaArrowRight } from 'react-icons/fa'
 import { useBlog } from '../context/BlogContext'
+import { getContentImageUrl, getFallbackImage } from '../utils/imageUtils'
 
 const BlogPage = () => {
   // Use the BlogContext to get posts and refresh function
@@ -146,7 +147,7 @@ const BlogPage = () => {
                     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
                       <div className="h-48 overflow-hidden">
                         <img
-                          src={post.image || '/images/blog/default.jpg'}
+                          src={getContentImageUrl(post.image, 'blog')}
                           alt={post.title}
                           className="w-full h-full object-cover transition-transform group-hover:scale-105"
                         />
@@ -224,7 +225,7 @@ const BlogPage = () => {
                   <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
                     <div className="h-48 overflow-hidden">
                       <img
-                        src={post.image || '/images/blog/default.jpg'}
+                        src={getContentImageUrl(post.image, 'blog')}
                         alt={post.title}
                         className="w-full h-full object-cover transition-transform group-hover:scale-105"
                       />

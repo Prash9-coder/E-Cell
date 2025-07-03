@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { FaCalendarAlt, FaMapMarkerAlt, FaFilter, FaSearch } from 'react-icons/fa'
 import { useEvents } from '../context/EventsContext'
 import StableImage from '../components/StableImage'
+import { getContentImageUrl, getFallbackImage } from '../utils/imageUtils'
 
 const EventsPage = () => {
   // Get events from context
@@ -364,9 +365,9 @@ const EventsPage = () => {
                 <div key={event.id} className="bg-white rounded-lg overflow-hidden shadow-md">
                   <div className="relative h-48">
                     <StableImage 
-                      src={event.image || '/images/events/default.svg'}
+                      src={getContentImageUrl(event.image, 'events')}
                       alt={event.title}
-                      fallbackSrc="/images/events/default.svg"
+                      fallbackSrc={getFallbackImage('events')}
                       className="w-full h-full"
                       objectFit="cover"
                     />

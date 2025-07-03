@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FaSearch, FaFilter, FaExternalLinkAlt, FaLinkedin, FaGlobe, FaArrowRight } from 'react-icons/fa'
 import axios from 'axios'
+import { getContentImageUrl, getFallbackImage } from '../utils/imageUtils'
 
 const StartupsPage = () => {
   // State for startups and filtering
@@ -664,7 +665,7 @@ const StartupsPage = () => {
                       <div key={startup.id} className="bg-white rounded-lg overflow-hidden shadow-md transition-transform hover:transform hover:scale-105">
                         <div className="relative h-48">
                           <img 
-                            src={startup.image} 
+                            src={getContentImageUrl(startup.image, 'startups')} 
                             alt={startup.name}
                             className="w-full h-full object-cover"
                           />
@@ -811,7 +812,7 @@ const StartupsPage = () => {
                             <div key={index} className="flex flex-col items-center">
                               <div className="w-10 h-10 rounded-full overflow-hidden mb-1">
                                 <img 
-                                  src={founder.image} 
+                                  src={getContentImageUrl(founder.image, 'team')} 
                                   alt={founder.name}
                                   className="w-full h-full object-cover"
                                 />
@@ -965,7 +966,7 @@ const StartupsPage = () => {
                     <div key={index} className="bg-white p-6 rounded-lg shadow-md">
                       <div className="flex items-center mb-4">
                         <img 
-                          src={testimonial.image} 
+                          src={getContentImageUrl(testimonial.image, 'team')} 
                           alt={testimonial.author}
                           className="w-12 h-12 rounded-full object-cover mr-4"
                         />

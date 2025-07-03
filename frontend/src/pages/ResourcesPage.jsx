@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { FaDownload, FaExternalLinkAlt, FaSearch, FaBookOpen, FaMoneyBillWave, FaFileAlt, FaVideo, FaTools, FaChalkboardTeacher } from 'react-icons/fa'
 import { useResources } from '../context/ResourceContext'
 import StableImage from '../components/StableImage'
+import { getContentImageUrl, getFallbackImage } from '../utils/imageUtils'
 
 const ResourcesPage = () => {
   const { resources, getFeaturedResources } = useResources();
@@ -267,10 +268,10 @@ const ResourcesPage = () => {
                 <div key={resource.id} className="bg-white rounded-lg overflow-hidden shadow-md transition-transform hover:transform hover:scale-105">
                   <div className="relative h-48">
                     <StableImage 
-                      src={resource.thumbnail || `/images/resources/default-${(resource.type || 'pdf').toLowerCase()}.jpg`} 
+                      src={getContentImageUrl(resource.thumbnail, 'resources')} 
                       alt={resource.title}
                       className="w-full h-full"
-                      fallbackSrc="/images/resources/default.jpg"
+                      fallbackSrc={getFallbackImage('resources')}
                       placeholderContent={
                         <div className="text-gray-400 text-center">
                           <div className="text-sm">{resource.type || 'Resource'}</div>
@@ -327,10 +328,10 @@ const ResourcesPage = () => {
                 <div key={resource.id} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
                   <div className="relative h-40">
                     <StableImage 
-                      src={resource.thumbnail || `/images/resources/default-${(resource.type || 'pdf').toLowerCase()}.jpg`} 
+                      src={getContentImageUrl(resource.thumbnail, 'resources')} 
                       alt={resource.title}
                       className="w-full h-full"
-                      fallbackSrc="/images/resources/default.jpg"
+                      fallbackSrc={getFallbackImage('resources')}
                       placeholderContent={
                         <div className="text-gray-400 text-center">
                           <div className="text-sm">{resource.type || 'Resource'}</div>
