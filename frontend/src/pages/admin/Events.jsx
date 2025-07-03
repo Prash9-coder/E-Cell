@@ -218,8 +218,7 @@ const Events = () => {
         // Optional fields with defaults
         registrations: currentEvent?.registrations || 0,
         isFeatured: currentEvent?.isFeatured || false,
-        // Ensure createdBy is set for new events
-        createdBy: currentEvent?.createdBy || '1', // Default to admin user ID
+        // Don't send createdBy - backend will set it automatically from authenticated user
         // Add a slug field based on the title
         slug: currentEvent?.slug || e.target.title.value.toLowerCase().replace(/\s+/g, '-')
       }

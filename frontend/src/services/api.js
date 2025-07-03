@@ -159,7 +159,14 @@ const handleResponse = async (response) => {
     }
     
     // Create a detailed error object with all available information
-    const errorMessage = data.message || data.error || response.statusText || 'Request failed';
+    let errorMessage = data.message || data.error || response.statusText || 'Request failed';
+    
+    // For validation errors, provide more specific details
+    if (data.details) {
+      const validationErrors = Object.values(data.details).map(err => err.message || err).join(', ');
+      errorMessage += ': ' + validationErrors;
+    }
+    
     const errorObj = new Error(errorMessage);
     errorObj.status = response.status;
     errorObj.statusText = response.statusText;
