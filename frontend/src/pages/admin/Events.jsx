@@ -588,6 +588,7 @@ const Events = () => {
                         id="time"
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
                         defaultValue={currentEvent?.time || '09:00 AM - 05:00 PM'}
+                        required
                       />
                     </div>
                     <div>
@@ -598,12 +599,14 @@ const Events = () => {
                         id="category"
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
                         defaultValue={currentEvent?.category || 'workshop'}
+                        required
                       >
                         <option value="workshop">Workshop</option>
                         <option value="competition">Competition</option>
                         <option value="speaker">Speaker Session</option>
                         <option value="networking">Networking</option>
                         <option value="hackathon">Hackathon</option>
+                        <option value="other">Other</option>
                       </select>
                     </div>
                     <div>

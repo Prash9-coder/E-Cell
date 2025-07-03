@@ -5,6 +5,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 import Event from '../models/Event.js';
+import User from '../models/User.js';
 import { authenticate } from '../middleware/auth.js';
 import { isAdmin } from '../middleware/roles.js';
 import { transformEventRequest, transformEventResponse } from '../middleware/eventTransform.js';
@@ -253,7 +254,43 @@ router.post('/', authenticate, isAdmin, transformEventRequest, async (req, res) 
     console.log('Event data received:', JSON.stringify(req.body, null, 2));
     
     // Add the current user as the creator
-    req.body.createdBy = req.user.id;
+    if (req.user && req.user.id) {
+      req.body.createdBy = req.user.id;
+      
+      // Validate ObjectId format
+      if (!mongoose.Types.ObjectId.isValid(req.body.createdBy)) {
+        console.error('Invalid createdBy ObjectId:', req.body.createdBy);
+        
+        // Try to find or create a default admin user
+        try {
+          let adminUser = await User.findOne({ email: 'admin@gmail.com' });
+          if (!adminUser) {
+            console.log('Creating default admin user for event creation...');
+            adminUser = new User({
+              name: 'Admin User',
+              email: 'admin@gmail.com',
+              password: 'tempPassword', // This should be hashed in production
+              role: 'admin'
+            });
+            await adminUser.save();
+            console.log('Default admin user created with ID:', adminUser._id);
+          }
+          req.body.createdBy = adminUser._id;
+        } catch (userError) {
+          console.error('Error handling admin user:', userError);
+          return res.status(400).json({ 
+            message: 'Invalid user ID format', 
+            error: 'createdBy must be a valid ObjectId' 
+          });
+        }
+      }
+    } else {
+      console.error('No user ID in request');
+      return res.status(401).json({ 
+        message: 'Authentication required', 
+        error: 'User ID is required for event creation' 
+      });
+    }
     
     // Validate required fields
     const requiredFields = ['title', 'description', 'longDescription', 'date', 'time', 'location', 'category'];

@@ -1,8 +1,12 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const dotenv = require('dotenv');
-const path = require('path');
-const fs = require('fs');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '../.env') });
