@@ -118,6 +118,15 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
 });
 
+// Test uploads route
+app.get('/uploads/test', (req, res) => {
+  res.status(200).json({ 
+    status: 'ok', 
+    message: 'Uploads directory is accessible',
+    uploadsPath: path.join(__dirname, 'uploads')
+  });
+});
+
 // Error handling middleware
 app.use(errorHandler);
 
@@ -135,13 +144,13 @@ app.get('/', (req, res) => {
   });
 });
 
-// Catch all non-API routes
+// Catch all non-API routes (but allow uploads)
 app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api/')) {
+  if (!req.path.startsWith('/api/') && !req.path.startsWith('/uploads/')) {
     res.status(404).json({ 
       status: 'error', 
       message: 'API endpoint not found. This is a backend API server. Frontend is deployed separately.',
-      availableEndpoints: '/api/*'
+      availableEndpoints: '/api/*, /uploads/*'
     });
   }
 });

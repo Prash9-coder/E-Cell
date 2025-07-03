@@ -42,33 +42,45 @@ export const getImageUrl = (imagePath) => {
  * @returns {string} - The full image URL
  */
 export const getContentImageUrl = (imagePath, contentType = 'events') => {
+  console.log(`🖼️ Processing image URL - Path: "${imagePath}", Type: "${contentType}"`);
+  
   if (!imagePath) {
-    return `/images/${contentType}/default.svg`;
+    const fallback = `/images/${contentType}/default.svg`;
+    console.log(`🖼️ No image path provided, using fallback: ${fallback}`);
+    return fallback;
   }
   
   // If it's already a full URL, return as is
   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    console.log(`🖼️ Full URL detected, returning as-is: ${imagePath}`);
     return imagePath;
   }
   
   // If it's a static asset path, return as is
   if (imagePath.startsWith('/images/')) {
+    console.log(`🖼️ Static asset path detected, returning as-is: ${imagePath}`);
     return imagePath;
   }
   
   // If it's an upload path, construct backend URL
   if (imagePath.startsWith('/uploads/') || imagePath.startsWith('uploads/')) {
     const cleanPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
-    return `${config.api.url.replace('/api', '')}/${cleanPath}`;
+    const backendUrl = `${config.api.url.replace('/api', '')}/${cleanPath}`;
+    console.log(`🖼️ Upload path detected, constructed URL: ${backendUrl}`);
+    return backendUrl;
   }
   
   // If it's just a filename, assume it's an upload
   if (!imagePath.includes('/')) {
-    return `${config.api.url.replace('/api', '')}/uploads/${contentType}/${imagePath}`;
+    const backendUrl = `${config.api.url.replace('/api', '')}/uploads/${contentType}/${imagePath}`;
+    console.log(`🖼️ Filename only detected, constructed URL: ${backendUrl}`);
+    return backendUrl;
   }
   
   // Default fallback
-  return `/images/${contentType}/default.svg`;
+  const fallback = `/images/${contentType}/default.svg`;
+  console.log(`🖼️ No pattern matched, using fallback: ${fallback}`);
+  return fallback;
 };
 
 /**
