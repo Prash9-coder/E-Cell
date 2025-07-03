@@ -250,19 +250,53 @@ router.post('/upload', authenticate, isAdmin, upload.single('image'), (req, res)
 router.post('/', authenticate, isAdmin, transformEventRequest, async (req, res) => {
   try {
     console.log('Creating new event. User:', req.user.name, 'Role:', req.user.role);
-    console.log('Event data:', req.body);
+    console.log('Event data received:', JSON.stringify(req.body, null, 2));
     
     // Add the current user as the creator
     req.body.createdBy = req.user.id;
     
+    // Validate required fields
+    const requiredFields = ['title', 'description', 'longDescription', 'date', 'time', 'location', 'category'];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        console.error(`Missing required field: ${field}`);
+        return res.status(400).json({ 
+          message: `Missing required field: ${field}`, 
+          error: `${field} is required` 
+        });
+      }
+    }
+    
     // Create and save the event
     const event = new Event(req.body);
+    console.log('Event object created, attempting to save...');
     await event.save();
     
     console.log('Event created successfully:', event._id);
     res.status(201).json(event);
   } catch (error) {
     console.error('Error creating event:', error);
+    console.error('Error details:', error.message);
+    console.error('Stack trace:', error.stack);
+    
+    // Handle validation errors
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors).map(e => e.message);
+      return res.status(400).json({ 
+        message: 'Validation error', 
+        error: validationErrors.join(', '),
+        details: error.errors
+      });
+    }
+    
+    // Handle MongoDB errors
+    if (error.code === 11000) {
+      return res.status(400).json({ 
+        message: 'Duplicate event', 
+        error: 'An event with this title already exists' 
+      });
+    }
+    
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });

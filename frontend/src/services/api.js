@@ -383,15 +383,20 @@ const api = {
     
     create: async (eventData) => {
       try {
+        console.log('Creating event with data:', eventData);
         const response = await fetch(`${config.api.url}/events`, {
           method: 'POST',
           headers: createHeaders(),
           body: JSON.stringify(eventData)
         });
         
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
         return handleResponse(response);
       } catch (error) {
         console.error('Error creating event:', error);
+        console.error('Error details:', error.message);
         
         // Only fall back to mock data if explicitly enabled
         if (USE_MOCK_API) {

@@ -167,8 +167,10 @@ export const EventsProvider = ({ children }) => {
         throw new Error('Authentication error: ' + error.message);
       } else {
         // Other errors
-        setError(error.message || 'Server error');
-        throw error;
+        console.error('Full error object:', error);
+        const errorMessage = error.message || error.error || 'Server error';
+        setError(errorMessage);
+        throw new Error(errorMessage);
       }
     } finally {
       setLoading(false);
