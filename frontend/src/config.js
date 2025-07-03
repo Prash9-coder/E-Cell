@@ -3,6 +3,13 @@
  * Loads environment variables from .env file via Vite
  */
 
+// Debug logging for environment variables
+console.log('Environment variables:', {
+  VITE_API_URL: import.meta.env.VITE_API_URL,
+  NODE_ENV: import.meta.env.NODE_ENV,
+  MODE: import.meta.env.MODE
+});
+
 const config = {
   app: {
     name: import.meta.env.VITE_APP_NAME || 'E-Cell',
@@ -10,7 +17,7 @@ const config = {
     version: import.meta.env.VITE_APP_VERSION || '1.0.0'
   },
   api: {
-    url: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+    url: import.meta.env.VITE_API_URL || 'https://e-cell-backend1.onrender.com/api',
     timeout: parseInt(import.meta.env.VITE_API_TIMEOUT || '30000', 10)
   },
   features: {
