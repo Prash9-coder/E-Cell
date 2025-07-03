@@ -50,7 +50,14 @@ app.use(helmet({
 
 // Configure CORS
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173', config.cors.origin], // Allow frontend development server
+  origin: [
+    'http://localhost:5173', 
+    'http://127.0.0.1:5173', 
+    'https://e-cell-web-green.vercel.app',
+    'https://e-cell-web-green-git-main-prash9-coders-projects.vercel.app',
+    'https://e-cell-web-green-prash9-coders-projects.vercel.app',
+    config.cors.origin
+  ], // Allow frontend development server and Vercel deployments
   credentials: config.cors.credentials,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
