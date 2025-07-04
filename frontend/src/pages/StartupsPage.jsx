@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { FaSearch, FaFilter, FaExternalLinkAlt, FaLinkedin, FaGlobe, FaArrowRight } from 'react-icons/fa'
 import axios from 'axios'
 import { getContentImageUrl, getFallbackImage } from '../utils/imageUtils'
+import StartupImage from '../components/ui/StartupImage'
 
 const StartupsPage = () => {
   // State for startups and filtering
@@ -664,10 +665,11 @@ const StartupsPage = () => {
                     .map(startup => (
                       <div key={startup.id} className="bg-white rounded-lg overflow-hidden shadow-md transition-transform hover:transform hover:scale-105">
                         <div className="relative h-48">
-                          <img 
+                          <StartupImage 
                             src={getContentImageUrl(startup.image, 'startups')} 
                             alt={startup.name}
                             className="w-full h-full object-cover"
+                            fallbackSrc={getFallbackImage('startups')}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                             <div className="p-4">

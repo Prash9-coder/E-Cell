@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { FaPlus, FaEdit, FaTrash, FaSearch, FaEye, FaSync } from 'react-icons/fa'
 import ImageUploader from '../../components/admin/ImageUploader'
+import StartupImage from '../../components/ui/StartupImage'
 import { useStartups } from '../../context/StartupContext'
 
 const Startups = () => {
@@ -111,7 +112,7 @@ const Startups = () => {
         // Set image if one was selected, otherwise use a default or existing one
         image: imageFile 
           ? URL.createObjectURL(imageFile) 
-          : (currentStartup?.image || '/images/startups/default.jpg')
+          : (currentStartup?.image || '/images/startups/default.svg')
       };
       
       if (currentStartup) {
@@ -168,6 +169,17 @@ const Startups = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Startups Management</h1>
         <div className="flex space-x-3">
+          {import.meta.env.MODE !== 'production' && (
+            <button
+              onClick={() => {
+                localStorage.removeItem('startups');
+                window.location.reload();
+              }}
+              className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md text-sm"
+            >
+              Reset Data
+            </button>
+          )}
           <button
             onClick={async () => {
               try {
@@ -276,19 +288,13 @@ const Startups = () => {
                 <tr key={startup.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      {startup.image && (
-                        <div className="flex-shrink-0 h-10 w-10 mr-3">
-                          <img 
-                            className="h-10 w-10 rounded-full object-cover" 
-                            src={startup.image} 
-                            alt={startup.name}
-                            onError={(e) => {
-                              e.target.src = '/images/startups/default.jpg';
-                              e.target.onerror = null;
-                            }}
-                          />
-                        </div>
-                      )}
+                      <div className="flex-shrink-0 h-10 w-10 mr-3">
+                        <StartupImage 
+                          src={startup.image || '/images/startups/default.svg'} 
+                          alt={startup.name}
+                          className="h-10 w-10 rounded-full object-cover"
+                        />
+                      </div>
                       <div className="text-sm font-medium text-gray-900">{startup.name}</div>
                     </div>
                   </td>

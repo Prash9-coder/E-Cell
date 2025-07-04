@@ -14,7 +14,7 @@ const defaultStartups = [
     stage: 'Seed',
     status: 'Active',
     featured: true,
-    image: '/images/startups/eco-solutions.jpg',
+    image: '/images/startups/eco-solutions.svg',
     description: 'Developing sustainable solutions for waste management and renewable energy.'
   },
   {
@@ -25,7 +25,7 @@ const defaultStartups = [
     stage: 'Series A',
     status: 'Active',
     featured: true,
-    image: '/images/startups/learn-hub.jpg',
+    image: '/images/startups/learn-hub.svg',
     description: 'Online learning platform focused on skill development for college students.'
   },
   {
@@ -36,7 +36,7 @@ const defaultStartups = [
     stage: 'Acquired',
     status: 'Active',
     featured: true,
-    image: '/images/startups/health-track.jpg',
+    image: '/images/startups/health-track.svg',
     description: 'AI-powered health monitoring and diagnostics platform.'
   }
 ];
