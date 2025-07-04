@@ -13,6 +13,7 @@ const EventsPage = () => {
   const [filteredEvents, setFilteredEvents] = useState([])
   const [activeTab, setActiveTab] = useState('upcoming')
   const [searchTerm, setSearchTerm] = useState('')
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [isLoading, setIsLoading] = useState(false)
 
@@ -26,13 +27,22 @@ const EventsPage = () => {
     { id: 'hackathon', name: 'Hackathons' }
   ]
 
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm)
+    }, 300)
+
+    return () => clearTimeout(timer)
+  }, [searchTerm])
+
   // Mock events data
   const mockEvents = [
     {
       id: 1,
       title: 'Startup Weekend',
-      date: '2024-06-15',
-      endDate: '2024-06-17',
+      date: '2025-06-15',
+      endDate: '2025-06-17',
       time: '09:00 AM - 06:00 PM',
       location: 'Main Auditorium',
       category: 'competition',
@@ -44,7 +54,7 @@ const EventsPage = () => {
     {
       id: 2,
       title: 'Venture Capital Panel',
-      date: '2024-07-05',
+      date: '2025-07-05',
       time: '02:00 PM - 04:00 PM',
       location: 'Business School, Room 302',
       category: 'speaker',
@@ -56,8 +66,8 @@ const EventsPage = () => {
     {
       id: 3,
       title: 'Tech Hackathon',
-      date: '2024-07-20',
-      endDate: '2024-07-21',
+      date: '2025-07-20',
+      endDate: '2025-07-21',
       time: '10:00 AM - 10:00 AM (24 hours)',
       location: 'Engineering Building',
       category: 'hackathon',
@@ -69,7 +79,7 @@ const EventsPage = () => {
     {
       id: 4,
       title: 'Design Thinking Workshop',
-      date: '2024-06-25',
+      date: '2025-06-25',
       time: '03:00 PM - 05:30 PM',
       location: 'Innovation Lab',
       category: 'workshop',
@@ -81,7 +91,7 @@ const EventsPage = () => {
     {
       id: 5,
       title: 'Networking Mixer',
-      date: '2024-06-30',
+      date: '2025-06-30',
       time: '06:00 PM - 08:00 PM',
       location: 'Student Center',
       category: 'networking',
@@ -93,7 +103,7 @@ const EventsPage = () => {
     {
       id: 6,
       title: 'Pitch Perfect: Presentation Skills',
-      date: '2024-07-10',
+      date: '2025-07-10',
       time: '01:00 PM - 03:00 PM',
       location: 'Communication Arts Building',
       category: 'workshop',
@@ -105,7 +115,7 @@ const EventsPage = () => {
     {
       id: 7,
       title: 'Founder Fireside Chat',
-      date: '2024-07-15',
+      date: '2025-07-15',
       time: '05:00 PM - 06:30 PM',
       location: 'Virtual (Zoom)',
       category: 'speaker',
@@ -117,7 +127,7 @@ const EventsPage = () => {
     {
       id: 8,
       title: 'Business Model Canvas Workshop',
-      date: '2024-07-25',
+      date: '2025-07-25',
       time: '02:00 PM - 04:30 PM',
       location: 'Business School, Room 201',
       category: 'workshop',
@@ -143,7 +153,7 @@ const EventsPage = () => {
     {
       id: 10,
       title: 'Startup Showcase',
-      date: '2023-12-10',
+      date: '2025-12-10',
       time: '03:00 PM - 06:00 PM',
       location: 'Main Auditorium',
       category: 'competition',
@@ -155,9 +165,9 @@ const EventsPage = () => {
     {
       id: 11,
       title: 'Women in Entrepreneurship Panel',
-      date: '2024-01-20',
+      date: '2025-07-20',
       time: '02:00 PM - 04:00 PM',
-      location: 'Business School Auditorium',
+      location: 'Sunstone Block Chaitanya Deemed to Be University Hanamkonda Campus',
       category: 'speaker',
       image: '/images/events/past/women-panel.jpg',
       description: 'Successful women entrepreneurs shared their experiences and insights.',
@@ -167,15 +177,15 @@ const EventsPage = () => {
     {
       id: 12,
       title: 'Winter Hackathon',
-      date: '2024-02-05',
-      endDate: '2024-02-06',
-      time: '10:00 AM - 10:00 AM (24 hours)',
+      date: '2025-02-05',
+      endDate: '2025-02-06',
+      time: '10:00 AM - 05:00 PM',
       category: 'hackathon',
-      location: 'Engineering Building',
+      location: 'Sunstone Block Chaitanya Deemed to Be University Hanamkonda Campus',
       image: '/images/events/past/winter-hackathon.jpg',
       description: 'Students built innovative solutions to address sustainability challenges.',
       isPast: true,
-      galleryLink: '/gallery#winter-hackathon-2024'
+      galleryLink: '/gallery#winter-hackathon-2025'
     }
   ]
 
@@ -183,6 +193,9 @@ const EventsPage = () => {
 
   // Filter events based on active tab, search term, and category
   useEffect(() => {
+    console.log('EventsPage - Events from context:', events)
+    console.log('EventsPage - Events length:', events.length)
+    
     // If we have events from the context, use those
     if (events.length > 0) {
       let filtered = [...events]
@@ -200,8 +213,8 @@ const EventsPage = () => {
       }
       
       // Filter by search term
-      if (searchTerm) {
-        const term = searchTerm.toLowerCase()
+      if (debouncedSearchTerm) {
+        const term = debouncedSearchTerm.toLowerCase()
         filtered = filtered.filter(event => 
           event.title.toLowerCase().includes(term) || 
           event.description.toLowerCase().includes(term) ||
@@ -251,7 +264,7 @@ const EventsPage = () => {
       
       setFilteredEvents(filtered)
     }
-  }, [events, activeTab, searchTerm, categoryFilter])
+  }, [events, activeTab, debouncedSearchTerm, categoryFilter])
 
   // Format date for display
   const formatDate = (dateString, endDateString) => {
@@ -408,8 +421,9 @@ const EventsPage = () => {
                         </Link>
                       ) : (
                         <Link 
-                          to={`/events/${event.id}`} 
+                          to={`/events/${event.id || event._id}`} 
                           className="inline-block bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+                          onClick={() => console.log('Navigating to event with ID:', event.id || event._id, 'Full event:', event)}
                         >
                           View Details
                         </Link>

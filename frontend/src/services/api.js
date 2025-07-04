@@ -505,6 +505,19 @@ const api = {
       try {
         console.log(`Attempting to register for event ${id} with data:`, registrationData);
         
+        // In development mode, use mock API directly if enabled
+        if (USE_MOCK_API) {
+          console.log('Using mock API for event registration in development mode');
+          try {
+            const mockResult = await mockEventApi.register(id, registrationData);
+            console.log('Mock registration result:', mockResult);
+            return mockResult;
+          } catch (mockError) {
+            console.error('Error with mock registration:', mockError);
+            throw mockError;
+          }
+        }
+        
         // For event registration, we don't need authentication headers
         // This allows non-logged-in users to register
         const response = await fetch(`${config.api.url}/events/${id}/register`, {
@@ -537,8 +550,8 @@ const api = {
       } catch (error) {
         console.error(`Error registering for event with ID ${id}:`, error);
         
-        // Only fall back to mock data if explicitly enabled
-        if (USE_MOCK_API) {
+        // Only fall back to mock data if explicitly enabled and not already using it
+        if (USE_MOCK_API && !error.message.includes('Mock')) {
           console.log('Falling back to mock data for event registration');
           try {
             const mockResult = await mockEventApi.register(id, registrationData);

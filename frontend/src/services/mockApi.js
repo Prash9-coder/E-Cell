@@ -36,12 +36,13 @@ const getStoredEvents = () => {
   // Default events if none are stored
   return [
     {
-      id: '1',
+      id: '6830b6bf39d800601996da48',
+      _id: '6830b6bf39d800601996da48',
       title: 'Startup Workshop',
       slug: 'startup-workshop',
       description: 'Learn how to launch your startup',
       longDescription: 'A comprehensive workshop on startup fundamentals',
-      date: '2024-07-15',
+      date: '2025-07-15',
       time: '10:00 AM - 4:00 PM',
       location: 'E-Cell Innovation Hub',
       category: 'workshop',
@@ -49,16 +50,17 @@ const getStoredEvents = () => {
       status: 'Upcoming',
       registrations: [],
       createdBy: '1',
-      createdAt: '2024-05-01T10:00:00Z',
-      updatedAt: '2024-05-01T10:00:00Z'
+      createdAt: '2025-05-01T10:00:00Z',
+      updatedAt: '2025-05-01T10:00:00Z'
     },
     {
-      id: '2',
+      id: '6830b6bf39d800601996da49',
+      _id: '6830b6bf39d800601996da49',
       title: 'Pitch Competition',
       slug: 'pitch-competition',
       description: 'Pitch your business idea to investors',
       longDescription: 'A chance to win funding for your startup',
-      date: '2024-08-20',
+      date: '2025-08-20',
       time: '2:00 PM - 6:00 PM',
       location: 'Main Auditorium',
       category: 'competition',
@@ -66,14 +68,39 @@ const getStoredEvents = () => {
       status: 'Upcoming',
       registrations: [],
       createdBy: '1',
-      createdAt: '2024-05-05T14:30:00Z',
-      updatedAt: '2024-05-05T14:30:00Z'
+      createdAt: '2025-05-05T14:30:00Z',
+      updatedAt: '2025-05-05T14:30:00Z'
+    },
+    {
+      id: '6830b6bf39d800601996da4a',
+      _id: '6830b6bf39d800601996da4a',
+      title: 'Tech Hackathon',
+      slug: 'tech-hackathon',
+      description: 'Build innovative solutions to real-world problems',
+      longDescription: 'A 24-hour coding marathon for innovative solutions',
+      date: '2025-09-15',
+      time: '10:00 AM - 10:00 AM (24 hours)',
+      location: 'Engineering Building',
+      category: 'hackathon',
+      image: '/images/events/default.jpg',
+      status: 'Upcoming',
+      registrations: [],
+      createdBy: '1',
+      createdAt: '2025-05-10T09:00:00Z',
+      updatedAt: '2025-05-10T09:00:00Z'
     }
   ];
 };
 
 // Initialize mock events from localStorage or defaults
 let mockEvents = getStoredEvents();
+
+// Clear any existing mock data on startup to ensure consistency
+if (import.meta.env.MODE !== 'production') {
+  console.log('[MOCK API] Clearing existing mock data for fresh start');
+  localStorage.removeItem('mockEvents');
+  mockEvents = getStoredEvents(); // This will reload the default events with correct IDs
+}
 
 // Helper function to save events to localStorage
 const saveEvents = () => {

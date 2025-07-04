@@ -32,13 +32,14 @@ const EventDetailPage = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
 
   // Mock event data - in a real app, this would come from an API
   const mockEvent = {
     id: '6830b6bf39d800601996da48', // Use the real ID from our database
     title: 'Startup Weekend',
-    date: '2024-06-15',
-    endDate: '2024-06-17',
+    date: '2025-06-15',
+    endDate: '2025-06-17',
     time: '09:00 AM - 06:00 PM',
     location: 'Main Auditorium',
     locationLink: 'https://maps.google.com/?q=Main+Auditorium',
@@ -82,26 +83,26 @@ const EventDetailPage = () => {
     ],
     speakers: [
       {
-        name: 'Rajiv Mehta',
+        name: 'Umair Mirza',
         title: 'Founder & CEO, TechVentures',
-        image: '/images/speakers/rajiv-mehta.jpg',
+        image: '/images/speakers/umair-mirza.jpg',
         bio: 'Serial entrepreneur with 3 successful exits and angel investor in over 20 startups.'
       },
       {
-        name: 'Priya Sharma',
+        name: 'Swathi',
         title: 'Partner, Venture Capital Firm',
-        image: '/images/speakers/priya-sharma.jpg',
+        image: '/images/speakers/swathi.jpg',
         bio: 'Experienced VC with a portfolio of early-stage startups across fintech and healthtech.'
       },
       {
-        name: 'Arjun Kapoor',
+        name: 'Angel',
         title: 'CTO, InnovateNow',
-        image: '/images/speakers/arjun-kapoor.jpg',
+        image: '/images/speakers/angel.jpg',
         bio: 'Technical leader with expertise in scaling startups from prototype to millions of users.'
       }
     ],
-    registrationFee: 'Rs. 1000 for students, Rs. 2000 for professionals',
-    registrationDeadline: 'June 10, 2024',
+    registrationFee: 'Registrations open now! Join us for a weekend of innovation and collaboration. Students and Professionals',
+    registrationDeadline: 'June 10, 2025',
     maxParticipants: 100,
     currentParticipants: 65,
     prerequisites: [
@@ -152,13 +153,26 @@ const EventDetailPage = () => {
       try {
         setIsLoading(true)
         
+        // Debug: Log the ID parameter
+        console.log('EventDetailPage - ID from useParams:', id)
+        console.log('EventDetailPage - ID type:', typeof id)
+        
+        // If ID is undefined, use the mock event ID
+        if (!id) {
+          console.log('ID is undefined, using mock event')
+          setEvent(mockEvent)
+          return
+        }
+        
         // Use the API service to fetch the event
         const eventData = await api.events.getById(id)
         
         // If no data is returned, fall back to mock data
         if (!eventData) {
           console.log('No event data returned from API, using mock data')
-          setEvent(mockEvent)
+          // Update mock event ID to match the URL parameter
+          const updatedMockEvent = { ...mockEvent, id: id }
+          setEvent(updatedMockEvent)
         } else {
           setEvent(eventData)
         }
@@ -166,7 +180,9 @@ const EventDetailPage = () => {
         console.error('Error fetching event:', error)
         // Fall back to mock data on error
         console.log('Error fetching event, using mock data')
-        setEvent(mockEvent)
+        // Update mock event ID to match the URL parameter
+        const updatedMockEvent = { ...mockEvent, id: id }
+        setEvent(updatedMockEvent)
       } finally {
         setIsLoading(false)
       }
@@ -193,6 +209,47 @@ const EventDetailPage = () => {
     return date.toLocaleDateString('en-US', options)
   }
 
+  // Calculate registration deadline dynamically (typically 2-3 days before event)
+  const getRegistrationDeadline = (eventDate) => {
+    if (!eventDate) return 'TBD'
+    
+    const eventDateTime = new Date(eventDate)
+    // Set deadline to 3 days before the event
+    const deadline = new Date(eventDateTime)
+    deadline.setDate(deadline.getDate() - 3)
+    
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+    return deadline.toLocaleDateString('en-US', options)
+  }
+
+  // Calculate current participants dynamically
+  const getCurrentParticipants = (registrations) => {
+    if (!registrations || !Array.isArray(registrations)) return 0
+    return registrations.length
+  }
+
+  // Check if registration is still open
+  const isRegistrationOpen = (eventDate) => {
+    if (!eventDate) return true
+    
+    const eventDateTime = new Date(eventDate)
+    const deadline = new Date(eventDateTime)
+    deadline.setDate(deadline.getDate() - 3)
+    
+    return new Date() < deadline
+  }
+
+  // Get remaining spots
+  const getRemainingSpots = (registrations, maxParticipants) => {
+    const currentCount = getCurrentParticipants(registrations)
+    return Math.max(0, maxParticipants - currentCount)
+  }
+
+  // Check if event is full
+  const isEventFull = (registrations, maxParticipants) => {
+    return getCurrentParticipants(registrations) >= maxParticipants
+  }
+
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -208,18 +265,60 @@ const EventDetailPage = () => {
     setIsSubmitting(true)
     console.log('Form submitted with data:', registrationForm)
     
+    // Clear previous error messages
+    setErrorMessage('')
+    
+    // Check if registration is still open
+    if (!isRegistrationOpen(event.date)) {
+      console.error('Cannot register: Registration is closed')
+      setErrorMessage('Registration for this event has closed.')
+      setSubmitStatus('error')
+      setIsSubmitting(false)
+      return
+    }
+
+    // Check if event is full
+    if (isEventFull(event.registrations, event.maxParticipants)) {
+      console.error('Cannot register: Event is full')
+      setErrorMessage('This event has reached its maximum capacity.')
+      setSubmitStatus('error')
+      setIsSubmitting(false)
+      return
+    }
+    
     // Validate form data
     if (!registrationForm.name || !registrationForm.email) {
       console.error('Name and email are required')
+      setErrorMessage('Please fill in all required fields (Name and Email).')
+      setSubmitStatus('error')
+      setIsSubmitting(false)
+      return
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(registrationForm.email)) {
+      console.error('Please enter a valid email address')
+      setErrorMessage('Please enter a valid email address.')
       setSubmitStatus('error')
       setIsSubmitting(false)
       return
     }
     
     try {
+      // Check if ID is valid before attempting registration
+      if (!id) {
+        console.error('Cannot register: Event ID is undefined')
+        setSubmitStatus('error')
+        return
+      }
+      
       // Always use the API directly for event registration
       // We've modified the backend to accept registrations without authentication
       console.log('Using api.events.register directly')
+      console.log('Registration - Event ID:', id)
+      console.log('Registration - Event ID type:', typeof id)
+      console.log('Registration - Form data:', registrationForm)
       try {
         const result = await api.events.register(id, registrationForm)
         console.log('Registration result:', result)
@@ -256,6 +355,7 @@ const EventDetailPage = () => {
       console.error('Registration error:', error)
       console.error('Error message:', error.message)
       console.error('Error stack:', error.stack)
+      setErrorMessage('Registration failed. Please try again or contact support if the problem persists.')
       setSubmitStatus('error')
     } finally {
       setIsSubmitting(false)
@@ -289,7 +389,12 @@ const EventDetailPage = () => {
     return (
       <div className="container py-16 text-center">
         <h2 className="text-2xl font-bold mb-4">Event Not Found</h2>
-        <p className="mb-8">The event you're looking for doesn't exist or has been removed.</p>
+        <p className="mb-4">The event you're looking for doesn't exist or has been removed.</p>
+        <div className="mb-8 p-4 bg-gray-100 rounded">
+          <p className="text-sm text-gray-600">Debug Info:</p>
+          <p className="text-sm">URL ID: {id || 'undefined'}</p>
+          <p className="text-sm">ID Type: {typeof id}</p>
+        </div>
         <Link to="/events" className="btn btn-primary">
           Back to Events
         </Link>
@@ -341,12 +446,39 @@ const EventDetailPage = () => {
               </div>
             </div>
             
+            {/* Registration Status Badge */}
+            <div className="mb-6">
+              {!isRegistrationOpen(event.date) ? (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                  Registration Closed
+                </span>
+              ) : isEventFull(event.registrations, event.maxParticipants) ? (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                  Event Full
+                </span>
+              ) : (
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                  Registration Open - {getRemainingSpots(event.registrations, event.maxParticipants)} spots left
+                </span>
+              )}
+            </div>
+            
             <div className="flex flex-wrap gap-4">
               <a 
                 href="#register" 
-                className="btn btn-secondary"
+                className={`btn ${
+                  isRegistrationOpen(event.date) && !isEventFull(event.registrations, event.maxParticipants)
+                    ? 'btn-secondary' 
+                    : 'btn-outline border-gray-400 text-gray-400 cursor-not-allowed'
+                }`}
+                onClick={(!isRegistrationOpen(event.date) || isEventFull(event.registrations, event.maxParticipants)) ? (e) => e.preventDefault() : undefined}
               >
-                Register Now
+                {!isRegistrationOpen(event.date) 
+                  ? 'Registration Closed' 
+                  : isEventFull(event.registrations, event.maxParticipants)
+                    ? 'Event Full'
+                    : 'Register Now'
+                }
               </a>
               
               <div className="relative">
@@ -528,30 +660,53 @@ const EventDetailPage = () => {
                   
                   <div>
                     <p className="text-gray-600 mb-1">Registration Deadline</p>
-                    <p className="font-medium">{event.registrationDeadline}</p>
+                    <p className="font-medium">{getRegistrationDeadline(event.date)}</p>
+                    {!isRegistrationOpen(event.date) && (
+                      <p className="text-red-600 text-sm mt-1">Registration Closed</p>
+                    )}
                   </div>
                   
                   <div>
                     <p className="text-gray-600 mb-1">Participants</p>
                     <div className="flex items-center">
                       <FaUsers className="mr-2 text-primary-600" />
-                      <span>{event.currentParticipants}/{event.maxParticipants} registered</span>
+                      <span>{getCurrentParticipants(event.registrations)}/{event.maxParticipants} registered</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                       <div 
-                        className="bg-primary-600 h-2.5 rounded-full" 
-                        style={{ width: `${(event.currentParticipants / event.maxParticipants) * 100}%` }}
+                        className={`h-2.5 rounded-full ${
+                          isEventFull(event.registrations, event.maxParticipants) 
+                            ? 'bg-red-500' 
+                            : 'bg-primary-600'
+                        }`}
+                        style={{ width: `${(getCurrentParticipants(event.registrations) / event.maxParticipants) * 100}%` }}
                       ></div>
                     </div>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {isEventFull(event.registrations, event.maxParticipants) 
+                        ? 'Event is full' 
+                        : `${getRemainingSpots(event.registrations, event.maxParticipants)} spots remaining`
+                      }
+                    </p>
                   </div>
                 </div>
                 
                 <a 
                   href="#register" 
-                  className="block w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium text-center rounded-md transition-colors"
+                  className={`block w-full py-3 px-4 font-medium text-center rounded-md transition-colors ${
+                    isRegistrationOpen(event.date) && !isEventFull(event.registrations, event.maxParticipants)
+                      ? 'bg-primary-600 hover:bg-primary-700 text-white' 
+                      : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                  }`}
+                  onClick={(!isRegistrationOpen(event.date) || isEventFull(event.registrations, event.maxParticipants)) ? (e) => e.preventDefault() : undefined}
                 >
                   <FaTicketAlt className="inline-block mr-2" />
-                  Register Now
+                  {!isRegistrationOpen(event.date) 
+                    ? 'Registration Closed' 
+                    : isEventFull(event.registrations, event.maxParticipants)
+                      ? 'Event Full'
+                      : 'Register Now'
+                  }
                 </a>
               </div>
               
@@ -584,6 +739,20 @@ const EventDetailPage = () => {
               Fill out the form below to secure your spot at the event.
             </p>
             
+            {!isRegistrationOpen(event.date) && (
+              <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-6">
+                <p className="font-bold">Registration Closed</p>
+                <p>Registration for this event has closed. The deadline was {getRegistrationDeadline(event.date)}.</p>
+              </div>
+            )}
+
+            {isRegistrationOpen(event.date) && isEventFull(event.registrations, event.maxParticipants) && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                <p className="font-bold">Event Full</p>
+                <p>This event has reached its maximum capacity of {event.maxParticipants} participants.</p>
+              </div>
+            )}
+            
             {submitStatus === 'success' ? (
               <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
                 <p className="font-bold">Registration Successful!</p>
@@ -592,7 +761,7 @@ const EventDetailPage = () => {
             ) : submitStatus === 'error' ? (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
                 <p className="font-bold">Registration Failed</p>
-                <p>Please make sure all required fields are filled correctly. If the problem persists, please contact us for assistance.</p>
+                <p>{errorMessage || 'Please make sure all required fields are filled correctly. If the problem persists, please contact us for assistance.'}</p>
               </div>
             ) : null}
             
@@ -697,10 +866,21 @@ const EventDetailPage = () => {
               
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-md transition-colors disabled:opacity-70"
+                disabled={isSubmitting || !isRegistrationOpen(event.date) || isEventFull(event.registrations, event.maxParticipants)}
+                className={`w-full py-3 px-4 font-medium rounded-md transition-colors disabled:opacity-70 ${
+                  isRegistrationOpen(event.date) && !isEventFull(event.registrations, event.maxParticipants)
+                    ? 'bg-primary-600 hover:bg-primary-700 text-white' 
+                    : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                }`}
               >
-                {isSubmitting ? 'Processing...' : 'Complete Registration'}
+                {!isRegistrationOpen(event.date) 
+                  ? 'Registration Closed' 
+                  : isEventFull(event.registrations, event.maxParticipants)
+                    ? 'Event Full'
+                    : isSubmitting 
+                      ? 'Processing...' 
+                      : 'Complete Registration'
+                }
               </button>
             </form>
           </div>

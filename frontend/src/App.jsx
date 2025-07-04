@@ -25,6 +25,7 @@ const ContactPage = lazy(() => import('./pages/ContactPage'))
 const BlogPage = lazy(() => import('./pages/BlogPage'))
 const BlogPostPage = lazy(() => import('./pages/BlogPostPage'))
 const GetInvolvedPage = lazy(() => import('./pages/GetInvolvedPage'))
+const TestEventRegistration = lazy(() => import('./pages/TestEventRegistration'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 // Admin pages
@@ -79,6 +80,7 @@ function App() {
                           <Route path="blog" element={<BlogPage />} />
                           <Route path="blog/:slug" element={<BlogPostPage />} />
                           <Route path="get-involved" element={<GetInvolvedPage />} />
+                          <Route path="test-registration" element={<TestEventRegistration />} />
                           <Route path="*" element={<NotFoundPage />} />
                         </Route>
                         
