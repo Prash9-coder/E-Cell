@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { FaArrowRight, FaCalendarAlt, FaLightbulb, FaUsers, FaChalkboardTeacher } from 'react-icons/fa'
 import PlaceholderImage from '../components/ui/PlaceholderImage'
 import ImageWithFallback from '../components/ui/ImageWithFallback'
+import VideoCarousel from '../components/ui/VideoCarousel'
 
 // Import images - using direct paths instead of imports
 const eSummitImage = '/assets/E-Summit.jpg'
@@ -72,6 +73,52 @@ const HomePage = () => {
     { label: 'Events Hosted', value: '200+', icon: <FaCalendarAlt /> },
     { label: 'Student Members', value: '1,500+', icon: <FaUsers /> },
     { label: 'Mentors', value: '75+', icon: <FaChalkboardTeacher /> }
+  ]
+
+  // Startup Videos - Famous startup pitches and talks
+  const startupVideos = [
+    {
+      id: 1,
+      title: "From Class 7 Drone Enthusiast to CEO of Enord",
+      speaker: "Campus to CEO - Drone Startup Story",
+      description: "Incredible journey of a young entrepreneur who started building drones in Class 7 and went on to supply drones for Operation Sindoor. Discover how passion for technology and innovation led to founding Enord, a successful drone company making impact in defense and commercial sectors.",
+      url: "https://youtu.be/G79641HhbP8?si=yhxB3ggtOl6RMovS"
+    },
+    {
+      id: 2,
+      title: "16-Year-Old's Startup Success with SattuFusion",
+      speaker: "Campus to CEO - Student Entrepreneur Story",
+      description: "Meet Vivaan Vasudeva, who built a real startup while still in high school. Learn how he turned traditional Indian superfood 'sattu' into a modern protein supplement brand, got listed on Amazon, and represented India at international startup competitions - all before turning 17!",
+      url: "https://youtu.be/cIjs5bPz3Eo?si=e4kvO4DgAf687zZE"
+    },
+    {
+      id: 3,
+      title: "Building Metvy at 18 - No MBA, No IIT Required",
+      speaker: "Campus to CEO - Shawrya Mehrotra Story",
+      description: "Inspiring story of Shawrya Mehrotra who started his entrepreneurial journey at 18 and built 3 successful ventures including Metvy, VC Fellowship, and MuzoClass. Discover how he managed 8000+ users organically, built a 200+ member team, and proves you don't need fancy degrees to succeed.",
+      url: "https://youtu.be/RLnyODRt0ho?si=-tyRNNLsxutdQSKA"
+    },
+    {
+      id: 4,
+      title: "150+ Keynotes at 25 - Young Speaker & Entrepreneur",
+      speaker: "Campus to CEO - TEDx Speaker Story",
+      description: "Meet the inspiring founder of Metvy who has delivered 150+ keynotes and graced TEDx stages by age 25. Learn how student entrepreneurs can build their personal brand, become thought leaders, and inspire others while building successful startups during college years.",
+      url: "https://youtu.be/UryFh2P1stw?si=lPSBz5rqdgu1U8Wg"
+    },
+    {
+      id: 5,
+      title: "BITS Pilani Students Get Funded by Naukri.com",
+      speaker: "Campus to CEO - College Startup Success",
+      description: "Amazing startup success story of BITS Pilani students who got funded by Naukri.com. Discover how college students can validate their ideas, build products that solve real problems, and attract investment from established companies while still pursuing their degrees.",
+      url: "https://youtu.be/WgxyTDnu27k?si=3SSEISpyWMy78Hvd"
+    },
+    {
+      id: 6,
+      title: "₹15K to Celebrity Fashion Brand - ISHKAARA Story",
+      speaker: "Campus to CEO - Fashion Startup Journey",
+      description: "Incredible journey of Vidhi who started ISHKAARA fashion brand with just ₹15,000 and now has celebrities like Kareena Kapoor and Big Boss contestants wearing her designs. Learn how to build a fashion startup, scale manufacturing, and get celebrity endorsements on a shoestring budget.",
+      url: "https://youtu.be/DslNrHzLz2c?si=jUdD0SSWdj6tOhXm"
+    }
   ]
 
   return (
@@ -152,6 +199,34 @@ const HomePage = () => {
                 <p>Empowering student entrepreneurs</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Startup Videos Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">
+              Real Student Startup Success Stories
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Get inspired by real Indian student entrepreneurs who built successful startups while still in school and college. From drone companies supplying to defense operations to fashion brands worn by celebrities - these authentic stories prove that age is just a number in entrepreneurship.
+            </p>
+          </div>
+          
+          <VideoCarousel videos={startupVideos} />
+          
+          <div className="text-center mt-8">
+            <p className="text-gray-600 mb-4">
+              Ready to dive deeper into entrepreneurship? Explore our comprehensive resource library with more videos, guides, and tools.
+            </p>
+            <Link 
+              to="https://www.youtube.com/@Campus2CEO" 
+              className="btn btn-primary"
+            >
+              Explore More Resources
+            </Link>
           </div>
         </div>
       </section>

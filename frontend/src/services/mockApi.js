@@ -3,13 +3,31 @@
  * This provides fallback functionality when the backend is not available
  */
 
+// Helper function to validate and fix event data
+const validateAndFixEvent = (event) => {
+  // Ensure registrations is always an array
+  if (!Array.isArray(event.registrations)) {
+    console.warn('Fixing invalid registrations field for event:', event.title);
+    event.registrations = [];
+  }
+  
+  // Ensure other required fields have proper defaults
+  if (!event.status) {
+    event.status = event.isPast ? 'Completed' : 'Upcoming';
+  }
+  
+  return event;
+};
+
 // In-memory storage for mock data
 // Use localStorage to persist mock events between page refreshes
 const getStoredEvents = () => {
   try {
     const storedEvents = localStorage.getItem('mockEvents');
     if (storedEvents) {
-      return JSON.parse(storedEvents);
+      const events = JSON.parse(storedEvents);
+      // Validate and fix all loaded events
+      return events.map(validateAndFixEvent);
     }
   } catch (error) {
     console.error('Error retrieving stored events:', error);
@@ -29,7 +47,7 @@ const getStoredEvents = () => {
       category: 'workshop',
       image: '/images/events/default.jpg',
       status: 'Upcoming',
-      registrations: 24,
+      registrations: [],
       createdBy: '1',
       createdAt: '2024-05-01T10:00:00Z',
       updatedAt: '2024-05-01T10:00:00Z'
@@ -46,7 +64,7 @@ const getStoredEvents = () => {
       category: 'competition',
       image: '/images/events/default.jpg',
       status: 'Upcoming',
-      registrations: 42,
+      registrations: [],
       createdBy: '1',
       createdAt: '2024-05-05T14:30:00Z',
       updatedAt: '2024-05-05T14:30:00Z'
@@ -60,15 +78,30 @@ let mockEvents = getStoredEvents();
 // Helper function to save events to localStorage
 const saveEvents = () => {
   try {
-    localStorage.setItem('mockEvents', JSON.stringify(mockEvents));
-    console.log('Mock events saved to localStorage:', mockEvents);
+    // Validate and fix all events before saving
+    const validatedEvents = mockEvents.map(validateAndFixEvent);
+    localStorage.setItem('mockEvents', JSON.stringify(validatedEvents));
+    console.log('Mock events saved to localStorage:', validatedEvents);
   } catch (error) {
     console.error('Error saving mock events:', error);
   }
 };
 
+// Function to clear mock data (useful for debugging)
+const clearMockData = () => {
+  try {
+    localStorage.removeItem('mockEvents');
+    mockEvents = getStoredEvents(); // This will reload the default events
+    console.log('[MOCK API] Mock data cleared and reset to defaults');
+  } catch (error) {
+    console.error('Error clearing mock data:', error);
+  }
+};
+
 // Mock event API
 const mockEventApi = {
+  // Add clear function for debugging
+  clearData: clearMockData,
   getAll: () => {
     console.log('[MOCK API] Getting all events');
     
@@ -112,6 +145,8 @@ const mockEventApi = {
       slug: eventData.title.toLowerCase().replace(/\s+/g, '-'),
       // Ensure status is set based on isPast if not provided
       status: eventData.status || (eventData.isPast ? 'Completed' : 'Upcoming'),
+      // Ensure registrations is always an array
+      registrations: Array.isArray(eventData.registrations) ? eventData.registrations : [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       createdBy: '1' // Mock admin user ID
@@ -142,6 +177,8 @@ const mockEventApi = {
       ...eventData,
       // Ensure status is set based on isPast if not provided
       status: eventData.status || (eventData.isPast ? 'Completed' : 'Upcoming'),
+      // Ensure registrations is always an array
+      registrations: Array.isArray(eventData.registrations) ? eventData.registrations : (mockEvents[index].registrations || []),
       updatedAt: new Date().toISOString()
     };
     
@@ -206,16 +243,27 @@ const mockEventApi = {
       return Promise.reject(new Error('Event not found'));
     }
     
-    // Increment registrations count
-    event.registrations = (event.registrations || 0) + 1;
+    // Add registration to the array
+    if (!event.registrations) {
+      event.registrations = [];
+    }
+    
+    const newRegistration = {
+      id: String(Math.floor(Math.random() * 1000)),
+      ...registrationData,
+      registeredAt: new Date().toISOString(),
+      attended: false,
+      certificateIssued: false
+    };
+    
+    event.registrations.push(newRegistration);
+    
+    // Save to localStorage
+    saveEvents();
     
     return Promise.resolve({ 
       message: 'Registration successful', 
-      registration: {
-        id: String(Math.floor(Math.random() * 1000)),
-        ...registrationData,
-        registeredAt: new Date().toISOString()
-      }
+      registration: newRegistration
     });
   },
   
@@ -227,19 +275,8 @@ const mockEventApi = {
       return Promise.reject(new Error('Event not found'));
     }
     
-    // Generate mock registrations
-    const mockRegistrations = Array.from({ length: event.registrations || 0 }, (_, i) => ({
-      id: String(i + 1),
-      name: `Participant ${i + 1}`,
-      email: `participant${i + 1}@example.com`,
-      phone: `+91 9876${543210 - i}`,
-      college: 'NITW',
-      year: '3rd Year',
-      registeredAt: new Date().toISOString(),
-      attended: Math.random() > 0.5
-    }));
-    
-    return Promise.resolve(mockRegistrations);
+    // Return actual registrations array or empty array if none
+    return Promise.resolve(event.registrations || []);
   },
   
   markAttendance: (id, registrationIds) => {

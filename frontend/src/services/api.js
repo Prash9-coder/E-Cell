@@ -413,11 +413,21 @@ const api = {
     
     create: async (eventData) => {
       try {
-        console.log('Creating event with data:', eventData);
+        // Validate and fix eventData before sending
+        const validatedData = {
+          ...eventData,
+          // Ensure registrations is always an array
+          registrations: Array.isArray(eventData.registrations) ? eventData.registrations : []
+        };
+        
+        console.log('Creating event with data:', validatedData);
+        console.log('Registrations field type:', typeof validatedData.registrations);
+        console.log('Is registrations an array?', Array.isArray(validatedData.registrations));
+        
         const response = await fetch(`${config.api.url}/events`, {
           method: 'POST',
           headers: createHeaders(),
-          body: JSON.stringify(eventData)
+          body: JSON.stringify(validatedData)
         });
         
         console.log('Response status:', response.status);
@@ -431,7 +441,7 @@ const api = {
         // Only fall back to mock data if explicitly enabled
         if (USE_MOCK_API) {
           console.log('Falling back to mock data');
-          return mockEventApi.create(eventData);
+          return mockEventApi.create(validatedData);
         }
         
         throw error;
@@ -440,10 +450,20 @@ const api = {
     
     update: async (id, eventData) => {
       try {
+        // Validate and fix eventData before sending
+        const validatedData = {
+          ...eventData,
+          // Ensure registrations is always an array
+          registrations: Array.isArray(eventData.registrations) ? eventData.registrations : []
+        };
+        
+        console.log('Updating event with data:', validatedData);
+        console.log('Registrations field type:', typeof validatedData.registrations);
+        
         const response = await fetch(`${config.api.url}/events/${id}`, {
           method: 'PUT',
           headers: createHeaders(),
-          body: JSON.stringify(eventData)
+          body: JSON.stringify(validatedData)
         });
         
         return handleResponse(response);
@@ -453,7 +473,7 @@ const api = {
         // Only fall back to mock data if explicitly enabled
         if (USE_MOCK_API) {
           console.log('Falling back to mock data');
-          return mockEventApi.update(id, eventData);
+          return mockEventApi.update(id, validatedData);
         }
         
         throw error;

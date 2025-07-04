@@ -3,6 +3,7 @@ import { FaPlus, FaEdit, FaTrash, FaSearch } from 'react-icons/fa'
 import { useEvents } from '../../context/EventsContext'
 import mockEventApi from '../../services/mockApi'
 import ImageUploader from '../../components/admin/ImageUploader'
+import { testEventCreation } from '../../utils/testEventCreation'
 
 const Events = () => {
   const { events, setEvents, loading, error, addEvent, updateEvent, deleteEvent } = useEvents()
@@ -215,8 +216,8 @@ const Events = () => {
         status: statusValue,
         // Convert status to isPast for the backend model
         isPast: isPast,
-        // Optional fields with defaults
-        registrations: currentEvent?.registrations || 0,
+        // Optional fields with defaults - ensure registrations is always an array
+        registrations: Array.isArray(currentEvent?.registrations) ? currentEvent.registrations : [],
         isFeatured: currentEvent?.isFeatured || false,
         // Don't send createdBy - backend will set it automatically from authenticated user
         // Add a slug field based on the title
@@ -232,7 +233,13 @@ const Events = () => {
         return;
       }
       
+      console.log('Current event being edited:', currentEvent);
+      console.log('Current event registrations:', currentEvent?.registrations);
+      console.log('Current event registrations type:', typeof currentEvent?.registrations);
+      console.log('Is registrations an array?', Array.isArray(currentEvent?.registrations));
       console.log('Submitting event data:', formData);
+      console.log('Registrations field type:', typeof formData.registrations);
+      console.log('Registrations field value:', formData.registrations);
       
       try {
       // Check if we have a token
@@ -358,13 +365,36 @@ const Events = () => {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Events Management</h1>
-        <button
-          onClick={handleAddEvent}
-          className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md flex items-center"
-          disabled={loading}
-        >
-          <FaPlus className="mr-2" /> Add Event
-        </button>
+        <div className="flex gap-2">
+          {import.meta.env.MODE !== 'production' && (
+            <>
+              <button
+                onClick={() => {
+                  testEventCreation();
+                }}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm"
+              >
+                Test Event Creation
+              </button>
+              <button
+                onClick={() => {
+                  mockEventApi.clearData();
+                  window.location.reload();
+                }}
+                className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md text-sm"
+              >
+                Clear Mock Data
+              </button>
+            </>
+          )}
+          <button
+            onClick={handleAddEvent}
+            className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md flex items-center"
+            disabled={loading}
+          >
+            <FaPlus className="mr-2" /> Add Event
+          </button>
+        </div>
       </div>
       
       {error && (
