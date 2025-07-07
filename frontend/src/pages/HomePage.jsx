@@ -18,22 +18,22 @@ const HomePage = () => {
   const upcomingEvents = [
     {
       id: 1,
-      title: 'E-Summit 2024',
-      date: 'June 15-17, 2024',
+      title: 'E-Summit 2025',
+      date: 'June 15-17, 2025',
       description: 'Our annual flagship event featuring keynote speakers, panel discussions, and networking opportunities.',
       image: eSummitImage
     },
     {
       id: 2,
       title: 'Startup Pitch Competition',
-      date: 'July 5, 2024',
+      date: 'July 5, 2025',
       description: 'Pitch your startup idea to a panel of judges and investors to win funding and mentorship.',
       image: startupPitchImage
     },
     {
       id: 3,
       title: 'Tech Hackathon',
-      date: 'July 20-21, 2024',
+      date: 'July 20-21, 2025',
       description: 'Build innovative solutions to real-world problems in this 24-hour coding marathon.',
       image: techHackathonImage
     }
@@ -44,25 +44,25 @@ const HomePage = () => {
     {
       id: 1,
       name: 'TechInnovate',
-      founder: 'Priya Sharma',
+      founder: 'founderNameHere',
       description: 'Developed an AI-powered productivity platform that secured $2M in seed funding.',
-      year: '2022',
+      year: '2025',
       image: techInnovateImage
     },
     {
       id: 2,
       name: 'LearnHub',
-      founder: 'Rahul Verma',
+      founder: 'founderNameHere',
       description: 'EdTech platform connecting students with tutors that now has 50,000+ active users.',
-      year: '2021',
+      year: '2025',
       image: learnHubImage
     },
     {
       id: 3,
       name: 'HealthTrack',
-      founder: 'Ananya Patel',
+      founder: 'founderNameHere',
       description: 'AI-powered health monitoring app acquired by a leading healthcare provider.',
-      year: '2023',
+      year: '2025',
       image: healthTrackImage
     }
   ]
@@ -186,16 +186,20 @@ const HomePage = () => {
               </Link>
             </div>
             <div className="relative">
-              <ImageWithFallback 
-                src={eTeamImage}
-                alt="E-Cell Team" 
-                height="300px"
-                className="rounded-lg shadow-xl"
-                placeholderText="E-Cell Team"
-                placeholderBgColor="#475569"
-              />
+              {/* Campus Overview Video */}
+              <div className="rounded-lg shadow-xl overflow-hidden bg-gray-100">
+                <iframe 
+                  className="w-full h-80"
+                  src="https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE"
+                  title="Campus Overview Video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                >
+                </iframe>
+              </div>
               <div className="absolute -bottom-6 -left-6 bg-primary-600 text-white p-6 rounded-lg shadow-lg">
-                <p className="text-2xl font-bold">Since 2015</p>
+                <p className="text-2xl font-bold">Since 2020</p>
                 <p>Empowering student entrepreneurs</p>
               </div>
             </div>
@@ -226,6 +230,92 @@ const HomePage = () => {
               className="btn btn-primary"
             >
               Explore More Resources
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Campus Life Videos Section */}
+      <section className="py-20 bg-white">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">
+              Experience Our Campus Life
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Get a glimpse of the vibrant entrepreneurial ecosystem at our campus. From innovation labs to startup events, 
+              see how we're fostering the next generation of entrepreneurs.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Campus Video 1 */}
+            <div className="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+              <div className="aspect-video bg-gray-200 relative">
+                <video 
+                  className="w-full h-full object-cover"
+                  controls
+                  poster="/images/campus/innovation-lab-poster.jpg"
+                >
+                  <source src="/videos/campus/innovation-lab-tour.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">Innovation Lab Tour</h3>
+                <p className="text-gray-600">
+                  Take a virtual tour of our state-of-the-art innovation lab where students bring their ideas to life.
+                </p>
+              </div>
+            </div>
+
+            {/* Campus Video 2 */}
+            <div className="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+              <div className="aspect-video bg-gray-200 relative">
+                <video 
+                  className="w-full h-full object-cover"
+                  controls
+                  poster="/images/campus/startup-event-poster.jpg"
+                >
+                  <source src="/videos/campus/startup-events.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">Startup Events & Competitions</h3>
+                <p className="text-gray-600">
+                  Watch highlights from our exciting startup competitions and entrepreneurship events.
+                </p>
+              </div>
+            </div>
+
+            {/* Campus Video 3 */}
+            <div className="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+              <div className="aspect-video bg-gray-200 relative">
+                <video 
+                  className="w-full h-full object-cover"
+                  controls
+                  poster="/images/campus/student-life-poster.jpg"
+                >
+                  <source src="/videos/campus/student-entrepreneurs.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">Student Entrepreneurs</h3>
+                <p className="text-gray-600">
+                  Meet our student entrepreneurs and learn about their journey from idea to startup.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <Link 
+              to="/gallery" 
+              className="btn btn-primary"
+            >
+              View More Campus Content
             </Link>
           </div>
         </div>
