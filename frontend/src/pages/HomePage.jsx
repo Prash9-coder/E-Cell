@@ -14,7 +14,6 @@ const healthTrackImage = '/assets/HealthTrack.jpg'
 const eTeamImage = '/assets/E-Cell-team.jpg'
 
 const HomePage = () => {
-  // Sample upcoming events data
   const upcomingEvents = [
     {
       id: 1,
@@ -39,7 +38,6 @@ const HomePage = () => {
     }
   ]
 
-  // Sample success stories
   const successStories = [
     {
       id: 1,
@@ -67,7 +65,6 @@ const HomePage = () => {
     }
   ]
 
-  // Stats
   const stats = [
     { label: 'Startups Launched', value: '50+', icon: <FaLightbulb /> },
     { label: 'Events Hosted', value: '200+', icon: <FaCalendarAlt /> },
@@ -75,7 +72,6 @@ const HomePage = () => {
     { label: 'Mentors', value: '75+', icon: <FaChalkboardTeacher /> }
   ]
 
-  // Startup Videos - Famous startup pitches and talks
   const startupVideos = [
     {
       id: 1,
@@ -125,7 +121,6 @@ const HomePage = () => {
     <>
       {/* Hero Section */}
       <section className="relative h-screen flex items-center">
-        {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <ImageWithFallback 
             src={eTeamImage}
@@ -136,28 +131,23 @@ const HomePage = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary-900/90 to-primary-800/70"></div>
         </div>
-        
+
         <div className="container relative z-10 text-white">
           <div className="max-w-3xl">
+            <div className="mb-4">
+              <span className="inline-block bg-secondary-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                🎓 Chaitanya University collaborated with Sunstone
+              </span>
+            </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               Transforming Ideas Into Successful Ventures
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-primary-100">
-              Join the entrepreneurial revolution at our campus. Learn, build, and grow with E-Cell.
+              Join the entrepreneurial revolution at <span className="text-secondary-300 font-semibold">Chaitanya University</span>. Learn, build, and grow with E-Cell.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link 
-                to="/get-involved" 
-                className="btn btn-secondary"
-              >
-                Get Involved
-              </Link>
-              <Link 
-                to="/events" 
-                className="btn btn-outline border-white text-white hover:bg-white/10"
-              >
-                Upcoming Events
-              </Link>
+              <Link to="/get-involved" className="btn btn-secondary">Get Involved</Link>
+              <Link to="/events" className="btn btn-outline border-white text-white hover:bg-white/10">Upcoming Events</Link>
             </div>
           </div>
         </div>
@@ -168,292 +158,189 @@ const HomePage = () => {
         <div className="container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-6 text-gray-900">
-                Fostering Innovation & Entrepreneurship
-              </h2>
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">Fostering Innovation & Entrepreneurship</h2>
+              <div className="bg-gradient-to-r from-primary-50 to-secondary-50 p-4 rounded-lg mb-6">
+                <p className="text-lg font-semibold text-primary-700">
+                  🏛️ <span className="text-primary-800">Chaitanya University</span> collaborated with <span className="text-secondary-700">Sunstone</span>
+                </p>
+              </div>
               <p className="text-lg text-gray-700 mb-6">
-                E-Cell is a student-run organization dedicated to promoting the spirit of entrepreneurship among students. We provide a platform for aspiring entrepreneurs to learn, network, and transform their ideas into reality.
+                E-Cell at <strong>Chaitanya University</strong> is a dynamic student-run organization that bridges the gap between academic learning and real-world entrepreneurship. Through our collaboration with <strong>Sunstone</strong>, we create an ecosystem where innovative ideas flourish through collaboration with industry leaders, successful entrepreneurs, and educational institutions.
               </p>
               <p className="text-lg text-gray-700 mb-8">
-                Through workshops, speaker sessions, competitions, and mentorship programs, we equip students with the knowledge and skills needed to navigate the startup ecosystem.
+                Our comprehensive approach includes expert-led workshops, industry insights from business leaders, startup competitions, and mentorship programs that prepare students for the evolving landscape of modern entrepreneurship and business innovation.
               </p>
-              <Link 
-                to="/about" 
-                className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700"
-              >
-                Learn more about us
-                <FaArrowRight className="ml-2" />
+              <Link to="/about" className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700">
+                Learn more about us <FaArrowRight className="ml-2" />
               </Link>
             </div>
             <div className="relative">
-              {/* Campus Overview Video */}
               <div className="rounded-lg shadow-xl overflow-hidden bg-gray-100">
                 <iframe 
                   className="w-full h-80"
-                  src="https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE"
-                  title="Campus Overview Video"
+                  src="https://www.youtube.com/embed/pQWeffeJA_s"
+                  title="Education Innovation & Entrepreneurship Insights"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
-                >
-                </iframe>
+                ></iframe>
               </div>
               <div className="absolute -bottom-6 -left-6 bg-primary-600 text-white p-6 rounded-lg shadow-lg">
                 <p className="text-2xl font-bold">Since 2020</p>
-                <p>Empowering student entrepreneurs</p>
+                <p>Empowering entrepreneurs at</p>
+                <p className="text-secondary-300 font-semibold">Chaitanya University</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Startup Videos Section */}
+      {/* Startup Videos */}
       <section className="py-20 bg-gray-50">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4 text-gray-900">
-              Real Student Startup Success Stories
-            </h2>
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">Real Student Startup Success Stories</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Get inspired by real Indian student entrepreneurs who built successful startups while still in school and college. From drone companies supplying to defense operations to fashion brands worn by celebrities - these authentic stories prove that age is just a number in entrepreneurship.
+              Get inspired by real Indian student entrepreneurs who built successful startups while still in school and college.
             </p>
           </div>
-          
           <VideoCarousel videos={startupVideos} />
-          
           <div className="text-center mt-8">
             <p className="text-gray-600 mb-4">
-              Ready to dive deeper into entrepreneurship? Explore our comprehensive resource library with more videos, guides, and tools.
+              Ready to dive deeper into entrepreneurship? Explore our comprehensive resource library.
             </p>
-            <Link 
-              to="https://www.youtube.com/@Campus2CEO" 
-              className="btn btn-primary"
-            >
-              Explore More Resources
-            </Link>
+            <Link to="https://www.youtube.com/@Campus2CEO" className="btn btn-primary">Explore More Resources</Link>
           </div>
         </div>
       </section>
 
-      {/* Campus Life Videos Section */}
+      {/* Campus Life Videos */}
       <section className="py-20 bg-white">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4 text-gray-900">
-              Experience Our Campus Life
-            </h2>
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">Experience Life at Chaitanya University</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Get a glimpse of the vibrant entrepreneurial ecosystem at our campus. From innovation labs to startup events, 
-              see how we're fostering the next generation of entrepreneurs.
+              Discover how we're building the next generation of entrepreneurs at <span className="text-primary-600 font-semibold">Chaitanya University</span> through innovation, collaboration, and hands-on learning experiences powered by our partnership with <span className="text-secondary-600 font-semibold">Sunstone</span>.
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Campus Video 1 */}
+            {/* Video 1 */}
             <div className="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
               <div className="aspect-video bg-gray-200 relative">
-                <video 
-                  className="w-full h-full object-cover"
-                  controls
-                  poster="/images/campus/innovation-lab-poster.jpg"
-                >
-                  <source src="/videos/campus/innovation-lab-tour.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <iframe className="w-full h-full" src="https://www.youtube.com/embed/Oi4SsSuPOEM?si=k0QtylVYwzU-irqp" title="Innovation Lab Tour" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Innovation Lab Tour</h3>
-                <p className="text-gray-600">
-                  Take a virtual tour of our state-of-the-art innovation lab where students bring their ideas to life.
-                </p>
+                <h3 className="text-xl font-semibold mb-2">Innovation Lab & Maker Space</h3>
+                <p className="text-gray-600">Step inside our state-of-the-art innovation lab equipped with 3D printers, prototyping tools, and collaborative workspaces where student entrepreneurs transform breakthrough ideas into tangible products and solutions.</p>
               </div>
             </div>
 
-            {/* Campus Video 2 */}
+            {/* Video 2 */}
             <div className="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
               <div className="aspect-video bg-gray-200 relative">
-                <video 
-                  className="w-full h-full object-cover"
-                  controls
-                  poster="/images/campus/startup-event-poster.jpg"
-                >
-                  <source src="/videos/campus/startup-events.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <iframe className="w-full h-full" src="https://www.youtube.com/embed/0TL99HK8SsA?si=fpZrTOKSorfFbeoY" title="Startup Events & Competitions" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Startup Events & Competitions</h3>
-                <p className="text-gray-600">
-                  Watch highlights from our exciting startup competitions and entrepreneurship events.
-                </p>
+                <h3 className="text-xl font-semibold mb-2">Pitch Competitions & Demo Days</h3>
+                <p className="text-gray-600">Experience the energy of our flagship startup competitions where students pitch innovative solutions to industry experts, investors, and successful entrepreneurs. Witness the birth of tomorrow's unicorns!</p>
               </div>
             </div>
 
-            {/* Campus Video 3 */}
+            {/* Video 3 */}
             <div className="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
               <div className="aspect-video bg-gray-200 relative">
-                <video 
-                  className="w-full h-full object-cover"
-                  controls
-                  poster="/images/campus/student-life-poster.jpg"
-                >
-                  <source src="/videos/campus/student-entrepreneurs.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <iframe className="w-full h-full" src="https://www.youtube.com/embed/_PCbuInstNU?si=qKTdaVqvpqqB7Xpo" title="Campus Overview" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Student Entrepreneurs</h3>
-                <p className="text-gray-600">
-                  Meet our student entrepreneurs and learn about their journey from idea to startup.
-                </p>
+                <h3 className="text-xl font-semibold mb-2">Entrepreneurial Ecosystem</h3>
+                <p className="text-gray-600">Explore our thriving entrepreneurial community where students collaborate on groundbreaking projects, attend inspiring speaker sessions, and build networks that last a lifetime. See how we're creating India's next generation of business leaders.</p>
               </div>
             </div>
           </div>
 
+          {/* Call to Action */}
           <div className="text-center mt-12">
-            <Link 
-              to="/gallery" 
-              className="btn btn-primary"
-            >
-              View More Campus Content
-            </Link>
+            <div className="bg-gradient-to-r from-primary-50 to-secondary-50 p-8 rounded-lg">
+              <h3 className="text-2xl font-bold mb-4 text-gray-900">Ready to Start Your Entrepreneurial Journey?</h3>
+              <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
+                Join our vibrant community of innovators, creators, and future business leaders. From ideation to execution, we provide the resources, mentorship, and network you need to turn your vision into reality.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link to="/get-involved" className="btn btn-primary">Join E-Cell Today</Link>
+                <Link to="/events" className="btn btn-outline">Upcoming Events</Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-gray-100">
-        <div className="container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 mb-4 bg-primary-600 text-white rounded-full text-2xl">
-                  {stat.icon}
-                </div>
-                <p className="text-4xl font-bold text-gray-900 mb-2">{stat.value}</p>
-                <p className="text-gray-600">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Upcoming Events Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-primary-600">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Upcoming Events</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Join us for exciting events designed to inspire, educate, and connect aspiring entrepreneurs.
+            <h2 className="text-3xl font-bold mb-4 text-white">Our Impact in Numbers</h2>
+            <p className="text-lg text-primary-100 max-w-3xl mx-auto">
+              See how we're making a difference in the entrepreneurial ecosystem and empowering the next generation of innovators.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {upcomingEvents.map((event) => (
-              <div key={event.id} className="card group">
-                <div className="relative overflow-hidden">
-                  <ImageWithFallback 
-                    src={event.image}
-                    alt={event.title}
-                    height="192px"
-                    className="w-full transition-transform duration-500 group-hover:scale-110"
-                    placeholderText={event.title}
-                    placeholderBgColor="#3b82f6"
-                  />
-                  <div className="absolute bottom-0 left-0 bg-primary-600 text-white py-1 px-3">
-                    <p className="text-sm font-medium">{event.date}</p>
-                  </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="text-4xl text-secondary-400 mb-4 flex justify-center">
+                  {stat.icon}
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                  <p className="text-gray-600 mb-4">{event.description}</p>
-                  <Link 
-                    to={`/events/${event.id}`}
-                    className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700"
-                  >
-                    Learn more
-                    <FaArrowRight className="ml-2" />
-                  </Link>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-primary-100 font-medium">
+                  {stat.label}
                 </div>
               </div>
             ))}
-          </div>
-          
-          <div className="text-center mt-12">
-            <Link to="/events" className="btn btn-primary">
-              View All Events
-            </Link>
           </div>
         </div>
       </section>
 
       {/* Success Stories Section */}
-      <section className="py-20 bg-gray-900 text-white">
+      <section className="py-20 bg-white">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Success Stories</h2>
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-              Discover how E-Cell has helped transform student ideas into successful ventures.
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">Success Stories</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Meet the inspiring entrepreneurs who started their journey with E-Cell and are now making waves in the startup ecosystem.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {successStories.map((story) => (
-              <div key={story.id} className="bg-gray-800 rounded-lg overflow-hidden">
-                <div className="relative h-56">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {successStories.map(story => (
+              <div key={story.id} className="bg-gray-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                <div className="aspect-video relative">
                   <ImageWithFallback 
                     src={story.image}
                     alt={story.name}
-                    height="224px"
-                    className="w-full"
+                    height="100%"
                     placeholderText={story.name}
-                    placeholderBgColor="#0f172a"
+                    placeholderBgColor="#f3f4f6"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold">{story.name}</h3>
-                      <p className="text-primary-300">Founded by {story.founder}, {story.year}</p>
-                    </div>
-                  </div>
                 </div>
-                <div className="p-6 pt-3">
-                  <p className="text-gray-300 mb-4">{story.description}</p>
-                  <Link 
-                    to={`/startups#${story.id}`}
-                    className="inline-flex items-center text-primary-300 font-medium hover:text-primary-200"
-                  >
-                    Read full story
-                    <FaArrowRight className="ml-2" />
-                  </Link>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-xl font-bold text-gray-900">{story.name}</h3>
+                    <span className="text-sm text-primary-600 font-medium">{story.year}</span>
+                  </div>
+                  <p className="text-sm text-gray-500 mb-2">Founded by {story.founder}</p>
+                  <p className="text-gray-600">{story.description}</p>
                 </div>
               </div>
             ))}
           </div>
           
           <div className="text-center mt-12">
-            <Link to="/startups" className="btn btn-outline border-white text-white hover:bg-white/10">
-              Explore All Startups
+            <Link to="/startups" className="btn btn-primary">
+              View All Success Stories
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-primary-600 text-white">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Ready to Begin Your Entrepreneurial Journey?</h2>
-            <p className="text-xl mb-8">
-              Whether you have a business idea or just want to learn more about entrepreneurship, E-Cell is here to support you.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/get-involved" className="btn bg-white text-primary-600 hover:bg-gray-100">
-                Join E-Cell
-              </Link>
-              <Link to="/contact" className="btn btn-outline border-white text-white hover:bg-white/10">
-                Contact Us
-              </Link>
-            </div>
           </div>
         </div>
       </section>
