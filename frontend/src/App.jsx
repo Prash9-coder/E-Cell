@@ -42,6 +42,7 @@ const AdminUsers = lazy(() => import('./pages/admin/Users'))
 const AdminSettings = lazy(() => import('./pages/admin/Settings'))
 const AdminResources = lazy(() => import('./pages/admin/Resources'))
 const AdminContentManager = lazy(() => import('./pages/admin/ContentManager'))
+const AdminNewsletter = lazy(() => import('./pages/admin/Newsletter'))
 const TestLogin = lazy(() => import('./pages/admin/TestLogin'))
 
 // Auth components
@@ -100,6 +101,7 @@ function App() {
                             <Route path="gallery" element={<AdminGallery />} />
                             <Route path="resources" element={<AdminResources />} />
                             <Route path="users" element={<AdminUsers />} />
+                            <Route path="newsletter" element={<AdminNewsletter />} />
                             <Route path="settings" element={<AdminSettings />} />
                             <Route path="content/:contentType" element={<AdminContentManager />} />
                           </Route>

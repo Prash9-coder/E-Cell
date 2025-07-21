@@ -1,33 +1,55 @@
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../../services/api'
 
 const NewsletterSignup = () => {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    if (!email) return
+    if (!email) {
+      alert('Please enter your email address')
+      return
+    }
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address')
+      return
+    }
     
     try {
       setLoading(true)
-      const response = await axios.post('/api/newsletter/subscribe', { email })
+      setStatus(null)
+      setErrorMessage('')
       
-      if (response.status === 200) {
+      console.log('Attempting to subscribe with email:', email)
+      const response = await api.newsletter.subscribe({ email })
+      console.log('Newsletter subscription response:', response)
+      
+      if (response.success) {
         setStatus('success')
         setEmail('')
+      } else {
+        console.error('Newsletter subscription failed:', response.message)
+        setStatus('error')
+        setErrorMessage(response.message || 'Failed to subscribe. Please try again.')
       }
     } catch (error) {
       console.error('Newsletter subscription error:', error)
       setStatus('error')
+      setErrorMessage(error.message || 'Network error. Please check your connection and try again.')
     } finally {
       setLoading(false)
       
       // Reset status after 5 seconds
       setTimeout(() => {
         setStatus(null)
+        setErrorMessage('')
       }, 5000)
     }
   }
@@ -69,7 +91,7 @@ const NewsletterSignup = () => {
           
           {status === 'error' && (
             <p className="mt-4 text-red-300">
-              There was an error subscribing. Please try again later.
+              {errorMessage || 'There was an error subscribing. Please try again later.'}
             </p>
           )}
           

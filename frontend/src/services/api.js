@@ -756,6 +756,43 @@ const api = {
       });
       
       return handleResponse(response);
+    },
+    
+    sendNewsletter: async (newsletterId) => {
+      const response = await fetch(`${config.api.url}/newsletter/${newsletterId}/send`, {
+        method: 'POST',
+        headers: createHeaders()
+      });
+      
+      return handleResponse(response);
+    },
+    
+    sendNewsletterToEmails: async (newsletterId, emails) => {
+      const response = await fetch(`${config.api.url}/newsletter/${newsletterId}/send-to-emails`, {
+        method: 'POST',
+        headers: createHeaders(),
+        body: JSON.stringify({ emails })
+      });
+      
+      return handleResponse(response);
+    },
+    
+    scheduleNewsletter: async (newsletterId, scheduledFor) => {
+      const response = await fetch(`${config.api.url}/newsletter/${newsletterId}/schedule`, {
+        method: 'POST',
+        headers: createHeaders(),
+        body: JSON.stringify({ scheduledFor })
+      });
+      
+      return handleResponse(response);
+    },
+    
+    getNewsletterStats: async (newsletterId) => {
+      const response = await fetch(`${config.api.url}/newsletter/${newsletterId}/stats`, {
+        headers: createHeaders()
+      });
+      
+      return handleResponse(response);
     }
   },
   

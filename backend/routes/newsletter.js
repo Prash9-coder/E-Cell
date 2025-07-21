@@ -2,6 +2,7 @@ import express from 'express';
 import { Subscriber, Newsletter } from '../models/Newsletter.js';
 import { authenticate, authorize } from '../middleware/auth.js';
 import crypto from 'crypto';
+import newsletterService from '../services/newsletterService.js';
 
 const router = express.Router();
 
@@ -46,6 +47,14 @@ router.post('/subscribe', async (req, res) => {
     });
     
     await subscriber.save();
+    
+    // Send welcome email
+    try {
+      await newsletterService.sendWelcomeEmail(email);
+    } catch (emailError) {
+      console.error('Failed to send welcome email:', emailError.message);
+      // Don't fail the subscription if email fails
+    }
     
     res.status(201).json({
       success: true,
@@ -371,6 +380,156 @@ router.delete('/:id', authenticate, authorize('admin', 'super-admin'), async (re
     res.status(500).json({ 
       success: false,
       message: 'Server error',
+      error: error.message
+    });
+  }
+});
+
+/**
+ * @route   POST /api/newsletter/:id/send
+ * @desc    Send newsletter to all subscribers
+ * @access  Private (Admin only)
+ */
+router.post('/:id/send', authenticate, authorize('admin', 'super-admin'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const result = await newsletterService.sendNewsletter(id);
+    
+    res.json({
+      success: true,
+      message: 'Newsletter sent successfully',
+      data: result
+    });
+  } catch (error) {
+    console.error('Error sending newsletter:', error.message);
+    res.status(500).json({ 
+      success: false,
+      message: error.message || 'Failed to send newsletter',
+      error: error.message
+    });
+  }
+});
+
+/**
+ * @route   POST /api/newsletter/:id/send-to-emails
+ * @desc    Send newsletter to specific email addresses
+ * @access  Private (Admin only)
+ */
+router.post('/:id/send-to-emails', authenticate, authorize('admin', 'super-admin'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { emails } = req.body;
+    
+    if (!emails || !Array.isArray(emails) || emails.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide an array of email addresses'
+      });
+    }
+    
+    const result = await newsletterService.sendNewsletterToEmails(id, emails);
+    
+    res.json({
+      success: true,
+      message: 'Newsletter sent to specified emails',
+      data: result
+    });
+  } catch (error) {
+    console.error('Error sending newsletter to emails:', error.message);
+    res.status(500).json({ 
+      success: false,
+      message: error.message || 'Failed to send newsletter',
+      error: error.message
+    });
+  }
+});
+
+/**
+ * @route   POST /api/newsletter/:id/schedule
+ * @desc    Schedule newsletter for later sending
+ * @access  Private (Admin only)
+ */
+router.post('/:id/schedule', authenticate, authorize('admin', 'super-admin'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { scheduledFor } = req.body;
+    
+    if (!scheduledFor) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide a scheduled date'
+      });
+    }
+    
+    const scheduledDate = new Date(scheduledFor);
+    if (scheduledDate <= new Date()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Scheduled date must be in the future'
+      });
+    }
+    
+    const result = await newsletterService.scheduleNewsletter(id, scheduledDate);
+    
+    res.json({
+      success: true,
+      message: 'Newsletter scheduled successfully',
+      data: result
+    });
+  } catch (error) {
+    console.error('Error scheduling newsletter:', error.message);
+    res.status(500).json({ 
+      success: false,
+      message: error.message || 'Failed to schedule newsletter',
+      error: error.message
+    });
+  }
+});
+
+/**
+ * @route   GET /api/newsletter/:id/stats
+ * @desc    Get newsletter statistics
+ * @access  Private (Admin only)
+ */
+router.get('/:id/stats', authenticate, authorize('admin', 'super-admin'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const stats = await newsletterService.getNewsletterStats(id);
+    
+    res.json({
+      success: true,
+      data: stats
+    });
+  } catch (error) {
+    console.error('Error fetching newsletter stats:', error.message);
+    res.status(500).json({ 
+      success: false,
+      message: error.message || 'Failed to fetch newsletter stats',
+      error: error.message
+    });
+  }
+});
+
+/**
+ * @route   POST /api/newsletter/process-scheduled
+ * @desc    Process scheduled newsletters (for cron jobs)
+ * @access  Private (Admin only)
+ */
+router.post('/process-scheduled', authenticate, authorize('admin', 'super-admin'), async (req, res) => {
+  try {
+    await newsletterService.processScheduledNewsletters();
+    
+    res.json({
+      success: true,
+      message: 'Scheduled newsletters processed'
+    });
+  } catch (error) {
+    console.error('Error processing scheduled newsletters:', error.message);
+    res.status(500).json({ 
+      success: false,
+      message: 'Failed to process scheduled newsletters',
       error: error.message
     });
   }

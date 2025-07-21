@@ -13,7 +13,8 @@ import {
   FaSignOutAlt,
   FaChevronRight,
   FaChevronDown,
-  FaBook
+  FaBook,
+  FaEnvelope
 } from 'react-icons/fa'
 import { useAuth } from '../../context/AuthContext'
 
@@ -40,6 +41,7 @@ const AdminLayout = () => {
     { name: 'Gallery', path: '/admin/gallery', icon: <FaImages /> },
     { name: 'Resources', path: '/admin/resources', icon: <FaBook /> },
     { name: 'Users', path: '/admin/users', icon: <FaUsers /> },
+    { name: 'Newsletter', path: '/admin/newsletter', icon: <FaEnvelope /> },
     { name: 'Settings', path: '/admin/settings', icon: <FaCog /> },
   ])
   
