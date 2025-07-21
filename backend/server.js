@@ -56,6 +56,7 @@ app.use(cors({
     'https://e-cell-web-green.vercel.app',
     'https://e-cell-web-green-git-main-prash9-coders-projects.vercel.app',
     'https://e-cell-web-green-prash9-coders-projects.vercel.app',
+    'https://e-cell-sunstone.vercel.app',
     config.cors.origin
   ], // Allow frontend development server and Vercel deployments
   credentials: config.cors.credentials,
