@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { FaArrowRight, FaCalendarAlt, FaLightbulb, FaUsers, FaChalkboardTeacher } from 'react-icons/fa'
+import { FaArrowRight } from 'react-icons/fa'
 import PlaceholderImage from '../components/ui/PlaceholderImage'
 import ImageWithFallback from '../components/ui/ImageWithFallback'
 import VideoCarousel from '../components/ui/VideoCarousel'
@@ -64,14 +64,14 @@ const HomePage = () => {
       image: healthTrackImage
     }
   ]
-
+{/*
   const stats = [
     { label: 'Startups Launched', value: '50+', icon: <FaLightbulb /> },
     { label: 'Events Hosted', value: '200+', icon: <FaCalendarAlt /> },
     { label: 'Student Members', value: '1,500+', icon: <FaUsers /> },
     { label: 'Mentors', value: '75+', icon: <FaChalkboardTeacher /> }
   ]
-
+  */}  
   const startupVideos = [
     {
       id: 1,
@@ -274,8 +274,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
-      {/* Stats Section */}
+{/* 
+      {/* Stats Section 
       <section className="py-20 bg-primary-600">
         <div className="container">
           <div className="text-center mb-12">
@@ -302,7 +302,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
+      */}
       {/* Success Stories Section */}
       <section className="py-20 bg-white">
         <div className="container">

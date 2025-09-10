@@ -178,7 +178,7 @@ const AboutPage = () => {
             </div>
             <div className="relative">
               <StableImage 
-                src="/assets/E-Cell-Mission.jpg" 
+                src="/assets/our mission.jpg" 
                 alt="E-Cell Mission" 
                 className="rounded-lg shadow-lg"
                 style={{ height: '300px' }}
@@ -194,7 +194,7 @@ const AboutPage = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1">
               <StableImage 
-                src="/assets/E-Cell-Vission.jpg" 
+                src="/assets/our vision.jpg" 
                 alt="E-Cell Vision" 
                 className="rounded-lg shadow-lg"
                 style={{ height: '300px' }}
